@@ -61,9 +61,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: Next.js setup, project structure, mock data, search with autocomplete
-- [ ] 03-02: Results page: double-panel layout, score display, domino, missing doctors, twins list
-- [ ] 03-03: Comparison mode, PDF export, map component
+- [ ] 03-01-PLAN.md — Next.js bootstrap, types, constants, search with autocomplete, landing page
+- [ ] 03-02-PLAN.md — Results page: double-panel layout, score display, domino, missing doctors, twins list, mini map
+- [ ] 03-03-PLAN.md — Free comparison mode, PDF export with dark theme
 
 ### Phase 4: Integration & Deploy
 **Goal**: Wire real JSON data, polish UX, deploy to Vercel, submit to hackathon
@@ -99,4 +99,4 @@ Lane B (frontend):
 
 ---
 *Roadmap defined: 2026-04-07*
-*Last updated: 2026-04-08 after Phase 2 planning*
+*Last updated: 2026-04-08 after Phase 3 planning*
