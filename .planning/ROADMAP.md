@@ -6,7 +6,7 @@ SanteScope ships in 4 phases over 6 days. Phase 1 builds the data foundation (do
 
 ## Phases
 
-- [ ] **Phase 1: Data Foundation** — Download 9 datasets, clean, merge into master parquet (Days 1-2)
+- [x] **Phase 1: Data Foundation** — Download 9 datasets, clean, merge into master parquet (Days 1-2) (completed 2026-04-07)
 - [ ] **Phase 2: Scoring & Clustering** — Vulnerability score, domino, twins, JSON export (Days 2-3)
 - [ ] **Phase 3: Frontend App** — Next.js with search, double-panel, twins list, PDF (Days 1-5, mock data first)
 - [ ] **Phase 4: Integration & Deploy** — Wire real JSONs, polish, deploy Vercel, submit (Days 5-6)
@@ -28,7 +28,7 @@ SanteScope ships in 4 phases over 6 days. Phase 1 builds the data foundation (do
 Plans:
 - [x] 01-01: Download and validate all 9 source datasets + La Poste table
 - [x] 01-02: Clean, normalize, and merge into communes_master.parquet
-- [ ] 01-03: Gap closure — integrate FiLoSoFi 2018 + RP2020 age data, clarify DATA-03
+- [x] 01-03: Gap closure — integrate FiLoSoFi 2018 + RP2020 age data, clarify DATA-03
 
 ### Phase 2: Scoring & Clustering
 **Goal**: Compute vulnerability score, domino projection, twin matching, and export all to JSON
