@@ -19,14 +19,16 @@ SanteScope ships in 4 phases over 6 days. Phase 1 builds the data foundation (do
 **Requirements**: DATA-01, DATA-02, DATA-03, DATA-04
 **Success Criteria** (what must be TRUE):
   1. 9 CSVs downloaded and validated (row counts, encoding, no corruption)
-  2. RPPS code_postal converted to code_commune with >98% join success
+  2. RPPS code_postal converted to code_commune with >98% join success (located practitioners)
   3. communes_master.parquet exists with >30K communes and columns from all datasets
   4. All inline assertions pass (null rates, join rates, row counts)
-**Plans**: 2 plans
+  5. All 4 score components have real data (APL, urgences, taux_pauvrete, pct_75_plus)
+**Plans**: 3 plans
 
 Plans:
 - [x] 01-01: Download and validate all 9 source datasets + La Poste table
 - [x] 01-02: Clean, normalize, and merge into communes_master.parquet
+- [ ] 01-03: Gap closure — integrate FiLoSoFi 2018 + RP2020 age data, clarify DATA-03
 
 ### Phase 2: Scoring & Clustering
 **Goal**: Compute vulnerability score, domino projection, twin matching, and export all to JSON
@@ -98,4 +100,4 @@ Lane B (frontend):
 
 ---
 *Roadmap defined: 2026-04-07*
-*Last updated: 2026-04-07 after /plan-eng-review*
+*Last updated: 2026-04-07 after gap closure planning*
