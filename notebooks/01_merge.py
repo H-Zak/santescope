@@ -345,16 +345,71 @@ print("PASS: APL >30K communes")
 
 
 # ─────────────────────────────────────────────────────────────
-# SECTION 5 — FiLoSoFi (poverty/income) — PLACEHOLDER
+# SECTION 5 — FiLoSoFi (poverty/income) — 2018 commune data
 # ─────────────────────────────────────────────────────────────
-print("\n=== SECTION 5: FiLoSoFi ===\n")
-print("WARNING: FiLoSoFi data unavailable (INSEE HTTP 500 in April 2026).")
-print("Using placeholder — poverty columns will be null for all communes.")
-print("TODO: Download from https://www.insee.fr/fr/statistiques/5055909 and re-run.")
+print("\n=== SECTION 5: FiLoSoFi (2018 poverty/income) ===\n")
 
-# Create empty filosofi_commune with correct schema
-# This ensures the merge works and just produces null columns
-filosofi_commune = pd.DataFrame(columns=["code_commune", "taux_pauvrete", "revenu_median"])
+import zipfile as _zipfile
+
+filosofi_zip = f"{RAW}/filosofi.zip"
+filosofi_csv = f"{RAW}/cc_filosofi_2018_COM-geo2021.CSV"
+
+# Extract if needed
+if not os.path.exists(filosofi_csv):
+    with _zipfile.ZipFile(filosofi_zip) as zf:
+        zf.extract("cc_filosofi_2018_COM-geo2021.CSV", RAW)
+
+filo = pd.read_csv(filosofi_csv, sep=";", dtype={"CODGEO": str})
+print(f"FiLoSoFi raw: {len(filo)} communes")
+
+# Select and rename columns
+filosofi_commune = filo[["CODGEO", "TP6018", "MED18"]].rename(columns={
+    "CODGEO": "code_commune",
+    "TP6018": "taux_pauvrete",
+    "MED18": "revenu_median"
+}).copy()
+
+# TP6018 is in % (e.g., 28.0 means 28%). Convert to ratio for consistency.
+filosofi_commune["taux_pauvrete"] = pd.to_numeric(filosofi_commune["taux_pauvrete"], errors="coerce") / 100.0
+filosofi_commune["revenu_median"] = pd.to_numeric(filosofi_commune["revenu_median"], errors="coerce")
+
+print(f"taux_pauvrete non-null: {filosofi_commune['taux_pauvrete'].notna().sum()}/{len(filosofi_commune)} ({filosofi_commune['taux_pauvrete'].notna().mean():.1%})")
+print(f"revenu_median non-null: {filosofi_commune['revenu_median'].notna().sum()}/{len(filosofi_commune)} ({filosofi_commune['revenu_median'].notna().mean():.1%})")
+
+assert filosofi_commune["taux_pauvrete"].notna().sum() > 4000, "Expected >4000 communes with poverty data"
+print("PASS: FiLoSoFi integrated")
+
+
+# ─────────────────────────────────────────────────────────────
+# SECTION 5b — RP2020 Age Structure (pct_75_plus)
+# ─────────────────────────────────────────────────────────────
+print("\n=== SECTION 5b: RP2020 Age Structure ===\n")
+
+pop_age_zip = f"{RAW}/pop_age.zip"
+pop_age_csv = f"{RAW}/base-cc-evol-struct-pop-2020.CSV"
+
+if not os.path.exists(pop_age_csv):
+    with _zipfile.ZipFile(pop_age_zip) as zf:
+        zf.extract("base-cc-evol-struct-pop-2020.CSV", RAW)
+
+pop_age = pd.read_csv(pop_age_csv, sep=";", dtype={"CODGEO": str},
+                       usecols=["CODGEO", "P20_POP", "P20_POP7589", "P20_POP90P"])
+print(f"RP2020 raw: {len(pop_age)} communes")
+
+pop_age["P20_POP"] = pd.to_numeric(pop_age["P20_POP"], errors="coerce")
+pop_age["P20_POP7589"] = pd.to_numeric(pop_age["P20_POP7589"], errors="coerce")
+pop_age["P20_POP90P"] = pd.to_numeric(pop_age["P20_POP90P"], errors="coerce")
+
+pop_age_commune = pd.DataFrame({
+    "code_commune": pop_age["CODGEO"],
+    "pct_75_plus": (pop_age["P20_POP7589"] + pop_age["P20_POP90P"]) / pop_age["P20_POP"]
+})
+
+print(f"pct_75_plus non-null: {pop_age_commune['pct_75_plus'].notna().sum()}/{len(pop_age_commune)} ({pop_age_commune['pct_75_plus'].notna().mean():.1%})")
+print(f"Median pct_75_plus: {pop_age_commune['pct_75_plus'].median():.3f}")
+
+assert pop_age_commune["pct_75_plus"].notna().sum() > 34000, "Expected >34K communes with age data"
+print("PASS: RP2020 age structure integrated")
 
 
 # ─────────────────────────────────────────────────────────────
@@ -623,7 +678,10 @@ master = master.merge(apl_commune, on="code_commune", how="left")
 print(f"After APL merge: {len(master)} communes")
 
 master = master.merge(filosofi_commune, on="code_commune", how="left")
-print(f"After FiLoSoFi merge: {len(master)} communes (poverty cols = null, data unavailable)")
+print(f"After FiLoSoFi merge: {len(master)} communes (taux_pauvrete: {master['taux_pauvrete'].notna().sum()} non-null, ~{master['taux_pauvrete'].notna().mean():.1%})")
+
+master = master.merge(pop_age_commune, on="code_commune", how="left")
+print(f"After RP2020 age merge: {len(master)} communes (pct_75_plus: {master['pct_75_plus'].notna().sum()} non-null, ~{master['pct_75_plus'].notna().mean():.1%})")
 
 master = master.merge(urgences_commune, on="code_commune", how="left")
 print(f"After Urgences merge: {len(master)} communes")
@@ -646,10 +704,6 @@ master.loc[mask_dom, "code_departement"] = master.loc[mask_dom, "code_commune"].
 
 master = master.merge(pathologies_dept, on="code_departement", how="left")
 print(f"After Pathologies merge: {len(master)} communes")
-
-# Compute pct_75_plus proxy (not directly available from our sources)
-# This will remain null until FiLoSoFi or dedicated age breakdown is added
-master["pct_75_plus"] = np.nan  # TODO: compute from age structure if available
 
 # Fill MSP boolean NaN with False
 master["has_msp"] = master["has_msp"].fillna(False)
@@ -688,16 +742,24 @@ print("PASS: apl column present")
 assert "temps_urgences_min" in master.columns, "Missing temps_urgences_min"
 print("PASS: temps_urgences_min column present")
 
-# NOTE: taux_pauvrete is null due to FiLoSoFi outage — don't assert it
-if "taux_pauvrete" in master.columns:
-    print(f"INFO: taux_pauvrete present but all null (FiLoSoFi unavailable)")
+# taux_pauvrete coverage (FiLoSoFi 2018 — statistical secrecy for small communes)
+tp_coverage = master["taux_pauvrete"].notna().mean()
+print(f"taux_pauvrete coverage: {tp_coverage:.1%} (large communes only, expected ~12%)")
+assert tp_coverage > 0.10, f"taux_pauvrete coverage {tp_coverage:.1%} < 10%"
+print("PASS: taux_pauvrete coverage >10%")
+
+# pct_75_plus coverage (RP2020 — should be ~100%)
+p75_coverage = master["pct_75_plus"].notna().mean()
+print(f"pct_75_plus coverage: {p75_coverage:.1%}")
+assert p75_coverage > 0.99, f"pct_75_plus coverage {p75_coverage:.1%} < 99%"
+print("PASS: pct_75_plus coverage >99%")
 
 # code_commune uniqueness
 assert master["code_commune"].is_unique, "Duplicate code_commune values!"
 print("PASS: code_commune is unique")
 
-# No commune has ALL score components null (using available ones)
-score_cols = ["apl", "temps_urgences_min"]
+# No commune has ALL score components null (all 4 now available)
+score_cols = ["apl", "temps_urgences_min", "taux_pauvrete", "pct_75_plus"]
 existing_score_cols = [c for c in score_cols if c in master.columns]
 all_null_mask = master[existing_score_cols].isna().all(axis=1)
 all_null_pct = all_null_mask.mean()
