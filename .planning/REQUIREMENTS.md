@@ -7,7 +7,7 @@
 
 ### Data Pipeline
 
-- [ ] **DATA-01**: Download and validate 9 source CSVs with integrity checks
+- [x] **DATA-01**: Download and validate 9 source CSVs with integrity checks
 - [ ] **DATA-02**: Join all datasets on code_commune (INSEE COG 5-digit)
 - [ ] **DATA-03**: RPPS code_postal converted to code_commune via La Poste table (>98% success)
 - [ ] **DATA-04**: Master parquet produced with all commune indicators merged
