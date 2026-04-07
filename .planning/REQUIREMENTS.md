@@ -16,22 +16,22 @@
 
 ### Vulnerability Score
 
-- [ ] **SCORE-01**: 4-component score (APL inverse, poverty rate, % 75+ alone, urgent-care access time)
-- [ ] **SCORE-02**: Min-max normalization across all communes, final score 0-10
-- [ ] **SCORE-03**: Communes with <3 of 4 components get score = null ("Donnees insuffisantes")
-- [ ] **SCORE-04**: Each component value + national average exposed in JSON for comparison
+- [x] **SCORE-01**: 4-component score (APL inverse, poverty rate, % 75+ alone, urgent-care access time)
+- [x] **SCORE-02**: Min-max normalization across all communes, final score 0-10
+- [x] **SCORE-03**: Communes with <3 of 4 components get score = null ("Donnees insuffisantes")
+- [x] **SCORE-04**: Each component value + national average exposed in JSON for comparison
 
 ### Missing Doctors
 
-- [ ] **DOC-01**: Count specialists per commune from RPPS grouped by specialty
-- [ ] **DOC-02**: Cross with department pathology rates to identify specialty gaps
-- [ ] **DOC-03**: Display top missing specialties per commune
+- [x] **DOC-01**: Count specialists per commune from RPPS grouped by specialty
+- [x] **DOC-02**: Cross with department pathology rates to identify specialty gaps
+- [x] **DOC-03**: Display top missing specialties per commune
 
 ### Retirement Domino
 
-- [ ] **DOM-01**: Estimate % doctors aged 55+ per commune using DREES department stats applied to RPPS commune counts
-- [ ] **DOM-02**: Project approximate medecin loss by 2030
-- [ ] **DOM-03**: Display domino alert when % 55+ exceeds department average
+- [x] **DOM-01**: Estimate % doctors aged 55+ per commune using DREES department stats applied to RPPS commune counts
+- [x] **DOM-02**: Project approximate medecin loss by 2030
+- [x] **DOM-03**: Display domino alert when % 55+ exceeds department average
 
 ### Twin Communes
 

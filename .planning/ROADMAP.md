@@ -44,7 +44,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Score + domino + missing doctors + GeoJSON enrichment (notebooks 02_score + 03_domino)
+- [x] 02-01-PLAN.md — Score + domino + missing doctors + GeoJSON enrichment (notebooks 02_score + 03_domino)
 - [ ] 02-02-PLAN.md — Twin matching + JSON export (notebooks 04_jumelles + 05_export_json)
 
 ### Phase 3: Frontend App
