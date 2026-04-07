@@ -11,8 +11,8 @@
 - [x] **DATA-02**: Join all datasets on code_commune (INSEE COG 5-digit)
 - [x] **DATA-03**: RPPS code_postal converted to code_commune via La Poste table (>98% of located practitioners; 14.3% excluded — no location in RPPS source data)
 - [x] **DATA-04**: Master parquet produced with all commune indicators merged
-- [ ] **DATA-05**: Export index.json (~500Ko, 35K entries: code, nom, dept, score, pop)
-- [ ] **DATA-06**: Export per-commune JSON files (~2Ko each) matching the frozen JSON schema
+- [x] **DATA-05**: Export index.json (~500Ko, 35K entries: code, nom, dept, score, pop)
+- [x] **DATA-06**: Export per-commune JSON files (~2Ko each) matching the frozen JSON schema
 
 ### Vulnerability Score
 
@@ -35,10 +35,10 @@
 
 ### Twin Communes
 
-- [ ] **TWIN-01**: Cluster communes on normalized indicators (APL, poverty, age structure, population, density)
-- [ ] **TWIN-02**: For each commune, find top 3-5 similar communes that improved (MSP installed or APL increased >0.3)
-- [ ] **TWIN-03**: Store similarity score and detected actions per twin
-- [ ] **TWIN-04**: Expose APL evolution timeline (multi-year) for twins that improved
+- [x] **TWIN-01**: Cluster communes on normalized indicators (APL, poverty, age structure, population, density)
+- [x] **TWIN-02**: For each commune, find top 3-5 similar communes that improved (MSP installed or APL increased >0.3)
+- [x] **TWIN-03**: Store similarity score and detected actions per twin
+- [x] **TWIN-04**: Expose APL evolution timeline (multi-year) for twins that improved
 
 ### Frontend
 

@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: In progress
-last_updated: "2026-04-08T23:02:00Z"
+last_updated: "2026-04-07T23:14:31.554Z"
 progress:
   total_phases: 4
-  completed_phases: 1
-  total_plans: 6
-  completed_plans: 4
+  completed_phases: 2
+  total_plans: 5
+  completed_plans: 5
 ---
 
 # State: SanteScope
@@ -25,16 +25,16 @@ See: .planning/PROJECT.md (updated 2026-04-07)
 **Phase 2: Scoring & Clustering — IN PROGRESS**
 
 - Status: IN PROGRESS
-- Plans: 1/3 done
-- Current Plan: 02
-- Progress: [███░░░░░░░] 33%
+- Plans: 2/3 done
+- Current Plan: 03
+- Progress: [██████░░░░] 67%
 
 ## Phase Progress
 
 | Phase | Name | Status | Plans |
 |-------|------|--------|-------|
 | 1 | Data Foundation | **COMPLETE** | 3/3 complete |
-| 2 | Scoring & Clustering | **IN PROGRESS** | 1/3 complete |
+| 2 | Scoring & Clustering | **IN PROGRESS** | 2/3 complete |
 | 3 | Frontend App | Ready (mock data) | 0/3 planned |
 | 4 | Integration & Deploy | Blocked by 2+3 | 0/2 planned |
 
@@ -92,6 +92,15 @@ See: .planning/PROJECT.md (updated 2026-04-07)
 - Dept code format bug fixed (01-09 zero-padding)
 - Key commits: b801956 (score), cd73080 (domino)
 
+### 02-02: Twin Matching & JSON Export (2026-04-08, 7min)
+
+- KNN twin matching (5 features, region priority) for all 34969 communes
+- 34969 per-commune JSON files exported to public/data/communes/
+- index.json with 34969 entries for frontend search
+- All JSON files pass jsonschema validation
+- Twin features use raw indicators not compressed score
+- Key commits: b7ed7cf (twins), 1c0c50d (export)
+
 ## Blockers
 
 None.
@@ -122,5 +131,7 @@ None.
 
 | 02-01 | 7min | 2 | 4 |
 
+| 02-02 | 7min | 2 | 3 |
+
 ---
-*Last updated: 2026-04-08 -- after 02-01 execution (vulnerability score + domino projection)*
+*Last updated: 2026-04-08 -- after 02-02 execution (twin matching + JSON export)*
