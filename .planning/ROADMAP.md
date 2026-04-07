@@ -41,12 +41,11 @@ Plans:
   4. Each commune has 0-5 twin communes with similarity score and detected actions
   5. index.json and per-commune JSONs exported matching the frozen schema
   6. >30K commune JSON files generated in public/data/communes/
-**Plans**: 3 plans
+**Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: Vulnerability score (4 components, min-max normalization)
-- [ ] 02-02: Domino projection + missing doctors by specialty
-- [ ] 02-03: Twin commune clustering + MSP/APL action detection + JSON export
+- [ ] 02-01-PLAN.md — Score + domino + missing doctors + GeoJSON enrichment (notebooks 02_score + 03_domino)
+- [ ] 02-02-PLAN.md — Twin matching + JSON export (notebooks 04_jumelles + 05_export_json)
 
 ### Phase 3: Frontend App
 **Goal**: Next.js app with search, double-panel results, twins list, comparison, PDF export
@@ -100,4 +99,4 @@ Lane B (frontend):
 
 ---
 *Roadmap defined: 2026-04-07*
-*Last updated: 2026-04-07 after gap closure planning*
+*Last updated: 2026-04-08 after Phase 2 planning*
