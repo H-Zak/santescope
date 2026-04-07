@@ -26,7 +26,7 @@ SanteScope ships in 4 phases over 6 days. Phase 1 builds the data foundation (do
 
 Plans:
 - [x] 01-01: Download and validate all 9 source datasets + La Poste table
-- [ ] 01-02: Clean, normalize, and merge into communes_master.parquet
+- [x] 01-02: Clean, normalize, and merge into communes_master.parquet
 
 ### Phase 2: Scoring & Clustering
 **Goal**: Compute vulnerability score, domino projection, twin matching, and export all to JSON
