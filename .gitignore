@@ -1,0 +1,27 @@
+# Data files (large, not versioned)
+notebooks/data/raw/
+notebooks/data/processed/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# Generated
+notebooks/create_notebook.py
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+
+# Environment
+.env
+.venv/
+venv/
+
+# Node
+node_modules/
+.next/
