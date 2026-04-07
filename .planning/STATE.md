@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Executing Phase 02
-last_updated: "2026-04-07T22:54:48.025Z"
+status: In progress
+last_updated: "2026-04-08T23:02:00Z"
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 5
-  completed_plans: 3
+  total_plans: 6
+  completed_plans: 4
 ---
 
 # State: SanteScope
@@ -22,18 +22,19 @@ See: .planning/PROJECT.md (updated 2026-04-07)
 
 ## Current Phase
 
-**Phase 1: Data Foundation — COMPLETE**
+**Phase 2: Scoring & Clustering — IN PROGRESS**
 
-- Status: COMPLETE
-- Plans: 3/3 done
-- Progress: [██████████] 100%
+- Status: IN PROGRESS
+- Plans: 1/3 done
+- Current Plan: 02
+- Progress: [███░░░░░░░] 33%
 
 ## Phase Progress
 
 | Phase | Name | Status | Plans |
 |-------|------|--------|-------|
 | 1 | Data Foundation | **COMPLETE** | 3/3 complete |
-| 2 | Scoring & Clustering | Ready (communes_master.parquet ready, 4/4 score components) | 0/3 planned |
+| 2 | Scoring & Clustering | **IN PROGRESS** | 1/3 complete |
 | 3 | Frontend App | Ready (mock data) | 0/3 planned |
 | 4 | Integration & Deploy | Blocked by 2+3 | 0/2 planned |
 
@@ -76,11 +77,24 @@ See: .planning/PROJECT.md (updated 2026-04-07)
 - Paris APL null in master: APL only has arrondissements (75101-75120), not city code 75056
 - FiLoSoFi 2018 downloaded from INSEE (infrastructure restored April 2026): cc_filosofi_2018_COM-geo2021.CSV, taux_pauvrete for ~12% of communes (statistical secrecy for small communes)
 - pct_75_plus computed from RP2020 age structure: (P20_POP7589 + P20_POP90P) / P20_POP, ~100% coverage
-- DATA-03 threshold clarified: 98% applies to located practitioners only (14.3% excluded from RPPS source — no SIRET/address)
+- DATA-03 threshold clarified: 98% applies to located practitioners only (14.3% excluded from RPPS source -- no SIRET/address)
+- APL inversion via (max - apl): avoids div-by-zero for 517 APL=0 communes
+- Quintile A-E thresholds: equal ~20% per class, robust to compressed score distribution [1.0, 6.1]
+- DREES dept code zero-padded (01-09) to match parquet format
+- Score range compressed to [1.0, 6.1] due to 87.8% poverty imputation -- expected, A-E classification compensates
+
+### 02-01: Vulnerability Score & Domino Projection (2026-04-08, 7min)
+
+- Vulnerability score 0-10 for 34815 communes (99.6%), A-E quintile classification
+- Domino projection: DREES dept-level %55+ doctors, 1813 alerts, 4622 projections
+- Missing specialties: 2756 communes with gaps via RPPS x pathology cross
+- GeoJSON enrichment: region + density for twin matching
+- Dept code format bug fixed (01-09 zero-padding)
+- Key commits: b801956 (score), cd73080 (domino)
 
 ## Blockers
 
-None — all Phase 1 blockers resolved.
+None.
 
 ## Milestone
 
@@ -106,6 +120,7 @@ None — all Phase 1 blockers resolved.
 | 01-02 | 12min | 2 | 3 |
 | 01-03 | ~20min | 3 | 5 |
 
+| 02-01 | 7min | 2 | 4 |
+
 ---
-*Last updated: 2026-04-07 — after 01-03 execution (gap closure: FiLoSoFi + RP2020 age data)*
-| Phase 01 P03 | 20 | 3 tasks | 6 files |
+*Last updated: 2026-04-08 -- after 02-01 execution (vulnerability score + domino projection)*
