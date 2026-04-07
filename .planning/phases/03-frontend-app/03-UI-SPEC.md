@@ -22,7 +22,7 @@ created: 2026-04-08
 | Preset | none — initialize in plan 03-01 with default New York style |
 | Component library | Radix UI (via shadcn) |
 | Icon library | lucide-react |
-| Font | Inter (Google Fonts: weights 400, 600, 700) |
+| Font | Inter (Google Fonts: weights 400, 600) |
 
 > shadcn gate: `components.json` not found (greenfield). D-03 locks shadcn as the tool. Executor must run `npx shadcn init` during plan 03-01 setup before adding any component.
 
@@ -44,7 +44,7 @@ Declared values (multiples of 4):
 
 Exceptions:
 - Touch target minimum for interactive elements: 44px (D-27 mobile compliance)
-- DPE strip letter tiles: 20px × 15px (small) / 24px × 18px (normal) — matches mockup exactly
+- DPE strip letter tiles: 20px × 16px (small) / 24px × 20px (normal)
 - Score badge: 48px × 48px (results page) / 72px × 72px (PDF component)
 
 ---
@@ -57,12 +57,12 @@ Source: D-02 + mockup HTML (`font-family: Inter`)
 |------|------|--------|-------------|
 | Body | 16px | 400 | 1.5 |
 | Label / caption | 12px | 400 | 1.4 |
-| Subheading / card title | 14px | 600 | 1.3 |
-| Heading / section title | 20px | 700 | 1.2 |
-| Display (landing tagline) | 28px | 700 | 1.15 |
+| Subheading / card title | 16px | 600 | 1.3 |
+| Heading / section title | 20px | 600 | 1.2 |
+| Display (landing tagline) | 28px | 600 | 1.15 |
 
-> 5 sizes declared — display is landing-only and does not add visual complexity to the app shell.
-> Weights: 400 (regular) and 600/700 (semibold/bold). Bold (700) reserved for headings and display only.
+> 4 sizes: 12, 16, 20, 28. Card titles use 16px weight 600 to distinguish from body (16px weight 400).
+> Weights: 400 (regular) and 600 (semibold) only.
 
 ---
 
@@ -227,7 +227,7 @@ Shadcn components to install in plan 03-01:
 ```
 [Full viewport]
   [Hero — centered, vertical flex, gap-8, py-64]
-    [Logo "SanteScope" — 28px bold teal]
+    [Logo "SanteScope" — 28px semibold teal]
     [Tagline — "Le diagnostic sante de votre commune" — 20px regular slate-600]
     [Search bar — w-full max-w-xl, Command component]
     [Stats row — "35K communes · 200K medecins · 9 sources open data" — 12px slate-400]
@@ -291,6 +291,8 @@ Source: D-06, D-11, D-16 + project French-language requirement (D-04)
 | Unavailable section | "Non disponible" |
 | Empty autocomplete | "Aucune commune trouvee — verifiez le nom ou le code INSEE" |
 | Index loading skeleton | "Chargement des communes..." |
+| Error: index load failure | "Impossible de charger les communes — verifiez votre connexion" |
+| Error: commune not found | "Commune introuvable — le code INSEE est peut-etre invalide" |
 | Domino alert prefix | "Alerte succession medicale" |
 | PDF header subtitle | "Diagnostic territorial de sante" |
 | PDF footer | "Sources : RPPS, DREES, APL, FiLoSoFi, RP2020, Urgences 2019 · SanteScope 2026" |
@@ -325,4 +327,4 @@ No third-party registries declared.
 ---
 
 *Sources: CONTEXT.md D-01..D-29 (29 decisions), REQUIREMENTS.md UI-01..08, mockup/santescope-app.jsx, mockup/santescope-mockup-pdf.html*
-*Generated: 2026-04-08*
+*Revised: 2026-04-08 — fixed typography (4 sizes, 2 weights), DPE tile dimensions (multiples of 4), added network error copy*
