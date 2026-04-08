@@ -42,7 +42,7 @@
 
 ### Frontend
 
-- [ ] **UI-01**: Search bar with client-side autocomplete on commune name/code
+- [x] **UI-01**: Search bar with client-side autocomplete on commune name/code
 - [ ] **UI-02**: Results page with double-panel layout (my commune | twin commune)
 - [ ] **UI-03**: My commune panel shows: score, score detail, missing doctors, domino alert
 - [ ] **UI-04**: Twin commune panel shows: similarity %, actions taken, APL before/after
