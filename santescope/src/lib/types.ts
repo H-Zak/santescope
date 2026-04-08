@@ -51,6 +51,9 @@ export interface CommuneData {
     has_msp: boolean;
   }>;
   msp_presente: boolean;
+  has_hopital: boolean;
+  has_ehpad: boolean;
+  nb_etablissements: number;
   apl_evolution: Record<string, number>;
   pathologies_dept: {
     diabete: number;

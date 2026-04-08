@@ -1,16 +1,26 @@
-import { CommuneData } from "@/lib/types";
+import { CommuneData, IndexEntry } from "@/lib/types";
 import { ScoreBadge } from "@/components/commune/ScoreBadge";
 
 interface TwinsListProps {
   jumelles: CommuneData["jumelles"];
   activeTwinIndex: number;
   onSwap: (index: number) => void;
+  index?: IndexEntry[] | null;
 }
 
-export function TwinsList({ jumelles, activeTwinIndex, onSwap }: TwinsListProps) {
+export function TwinsList({ jumelles, activeTwinIndex, onSwap, index }: TwinsListProps) {
   const SHOW = 4;
   const visible = jumelles.slice(0, SHOW);
   const remaining = jumelles.length - SHOW;
+
+  // Build lookup map for twin scores from index
+  const indexMap = new Map<string, IndexEntry>();
+  if (index) {
+    for (const twin of visible) {
+      const entry = index.find((e) => e.code === twin.code);
+      if (entry) indexMap.set(twin.code, entry);
+    }
+  }
 
   return (
     <div
@@ -38,6 +48,7 @@ export function TwinsList({ jumelles, activeTwinIndex, onSwap }: TwinsListProps)
       <div style={{ display: "flex", gap: 8, overflowX: "auto" }}>
         {visible.map((twin, i) => {
           const isActive = activeTwinIndex === i;
+          const entry = indexMap.get(twin.code);
           return (
             <button
               key={twin.code}
@@ -58,7 +69,7 @@ export function TwinsList({ jumelles, activeTwinIndex, onSwap }: TwinsListProps)
                 flexShrink: 0,
               }}
             >
-              <ScoreBadge classe={null} size={22} />
+              <ScoreBadge classe={entry?.classe ?? null} size={22} />
               <div style={{ textAlign: "left" }}>
                 <div style={{ fontWeight: 600, fontSize: 13 }}>{twin.nom}</div>
                 <div style={{ fontSize: 10, color: "#64748b" }}>

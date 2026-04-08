@@ -19,6 +19,9 @@ import { DominoAlert } from "@/components/commune/DominoAlert";
 import { MissingDoctors } from "@/components/commune/MissingDoctors";
 import { TwinPanel } from "@/components/commune/TwinPanel";
 import { TwinsList } from "@/components/commune/TwinsList";
+import { CommuneEquipments } from "@/components/commune/CommuneEquipments";
+import { ScoreMethodology } from "@/components/commune/ScoreMethodology";
+import { ActionPathways } from "@/components/commune/ActionPathways";
 import { IndexEntry } from "@/lib/types";
 import { DPE_COLORS, DPE_TEXT_COLORS } from "@/lib/constants";
 import { PdfExportContent } from "@/components/pdf/PdfExportContent";
@@ -139,6 +142,7 @@ function CompareSearchInline({ currentCode }: { currentCode: string }) {
 
 export function CommuneView({ code }: CommuneViewProps) {
   const { data, loading, error } = useCommuneData(code);
+  const { index } = useSearchIndex();
   const [activeTwin, setActiveTwin] = useState(0);
   const [showCompareSearch, setShowCompareSearch] = useState(false);
 
@@ -185,15 +189,20 @@ export function CommuneView({ code }: CommuneViewProps) {
         <DpeStrip active={data.classe} />
       </div>
 
-      <ScoreGauge classe={data.classe} score={data.score} />
+      <div className="flex items-center gap-1">
+        <div className="flex-1"><ScoreGauge classe={data.classe} score={data.score} /></div>
+        <ScoreMethodology />
+      </div>
       <MiniMap nom={data.nom} coords={data.coords} />
-      <ScoreDetail scoreDetail={data.score_detail} />
+      <ScoreDetail scoreDetail={data.score_detail} aplEvolution={data.apl_evolution} communeName={data.nom} />
+      <CommuneEquipments data={data} />
       {data.domino && (
         <DominoAlert domino={data.domino} medecinTotal={data.medecins.total} />
       )}
       {data.manques && data.manques.length > 0 && (
         <MissingDoctors manques={data.manques} pathologies={data.pathologies_dept} />
       )}
+      <ActionPathways data={data} />
     </div>
   );
 
@@ -214,16 +223,20 @@ export function CommuneView({ code }: CommuneViewProps) {
           onClick={() => setShowCompareSearch((v) => !v)}
           style={{
             width: "100%",
-            padding: 10,
-            borderRadius: 10,
-            border: "1.5px dashed #0EA5E9",
-            background: "#f0f9ff",
+            padding: 12,
+            borderRadius: 12,
+            border: "2px solid #0EA5E9",
+            background: "linear-gradient(135deg, #f0f9ff, #e0f2fe)",
             cursor: "pointer",
             fontSize: 13,
-            color: "#0EA5E9",
-            fontWeight: 500,
+            color: "#0369a1",
+            fontWeight: 600,
             fontFamily: "inherit",
+            boxShadow: "0 1px 3px rgba(14, 165, 233, 0.15)",
+            transition: "all 0.15s",
           }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "#e0f2fe"; e.currentTarget.style.boxShadow = "0 2px 6px rgba(14, 165, 233, 0.25)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "linear-gradient(135deg, #f0f9ff, #e0f2fe)"; e.currentTarget.style.boxShadow = "0 1px 3px rgba(14, 165, 233, 0.15)"; }}
         >
           Comparer avec une autre commune...
         </button>
@@ -238,7 +251,7 @@ export function CommuneView({ code }: CommuneViewProps) {
       <DoublePanelLayout left={leftPanel} right={rightPanel} />
       <PdfExportContent commune={data} />
       {data.jumelles.length > 0 && (
-        <TwinsList jumelles={data.jumelles} activeTwinIndex={activeTwin} onSwap={setActiveTwin} />
+        <TwinsList jumelles={data.jumelles} activeTwinIndex={activeTwin} onSwap={setActiveTwin} index={index} />
       )}
     </div>
   );

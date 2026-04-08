@@ -1,9 +1,41 @@
 "use client";
 
+import { useState } from "react";
 import { useCommuneData } from "@/hooks/useCommuneData";
 import { ScoreBadge } from "@/components/commune/ScoreBadge";
 import { ScoreGauge } from "@/components/commune/ScoreGauge";
+import { MiniMap } from "@/components/commune/MiniMap";
 import { CommuneData } from "@/lib/types";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+
+const INDICATOR_HELP: Record<string, string> = {
+  "APL": "Accessibilité Potentielle Localisée : consultations accessibles par habitant par an.",
+  "Pauvreté": "Part de la population sous le seuil de pauvreté. Source : INSEE FiLoSoFi.",
+  "75+ isolées": "Part de la population de 75 ans et plus. Source : INSEE RP2020.",
+  "Urgences": "Temps de trajet vers les urgences les plus proches (pas le temps d'attente). 0 min = urgences sur place.",
+};
+
+function InfoTooltip({ text }: { text: string }) {
+  return (
+    <Tooltip>
+      <TooltipTrigger
+        style={{
+          display: "inline-flex", alignItems: "center", justifyContent: "center",
+          width: 15, height: 15, borderRadius: "50%",
+          background: "#f1f5f9", color: "#94a3b8",
+          fontSize: 9, fontWeight: 700, cursor: "help",
+          border: "none", padding: 0, marginLeft: 4, flexShrink: 0,
+          fontFamily: "inherit",
+        }}
+      >
+        ?
+      </TooltipTrigger>
+      <TooltipContent side="top" style={{ maxWidth: 240 }}>
+        {text}
+      </TooltipContent>
+    </Tooltip>
+  );
+}
 
 type TwinRef = CommuneData["jumelles"][number];
 
@@ -169,6 +201,116 @@ function CompareRow({
   );
 }
 
+function ExpandableIndicators({
+  commune,
+  twin,
+  twinData,
+}: {
+  commune: CommuneData;
+  twin: TwinRef;
+  twinData: CommuneData;
+}) {
+  const [aplOpen, setAplOpen] = useState(false);
+
+  return (
+    <div>
+      <div style={{ fontSize: 11, fontWeight: 600, color: "#475569", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+        Indicateurs comparés
+      </div>
+      <div style={{ fontSize: 10, color: "#94a3b8", display: "flex", marginBottom: 2 }}>
+        <span style={{ flex: 1 }} />
+        <span style={{ width: 55, textAlign: "right" }}>Vous</span>
+        <span style={{ width: 30, textAlign: "center" }} />
+        <span style={{ width: 55, textAlign: "right" }}>Jumelle</span>
+      </div>
+      <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 12, overflow: "hidden" }}>
+        {/* APL row — clickable to expand sparkline */}
+        <div
+          onClick={() => setAplOpen((v) => !v)}
+          style={{ display: "flex", alignItems: "center", padding: "10px 14px", borderBottom: "1px solid #f1f5f9", cursor: "pointer", transition: "background 0.1s" }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "#f8fafc"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+        >
+          <svg
+            width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round"
+            style={{ flexShrink: 0, marginRight: 8, transition: "transform 0.15s", transform: aplOpen ? "rotate(90deg)" : "rotate(0deg)" }}
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+          <span style={{ flex: 1, fontSize: 13, color: "#64748b", display: "flex", alignItems: "center" }}>APL<InfoTooltip text={INDICATOR_HELP["APL"]} /></span>
+          <span style={{ fontWeight: 600, fontSize: 14, marginRight: 6 }}>{commune.score_detail.apl.toFixed(1)}</span>
+          <span style={{ fontSize: 11, color: "#94a3b8", marginRight: 12 }}>vs</span>
+          <CompareValue myVal={commune.score_detail.apl} twinVal={twinData.score_detail.apl} lowerIsBetter={false} format={(v) => v.toFixed(1)} />
+        </div>
+
+        {/* Expandable APL sparkline panel */}
+        {aplOpen && (
+          <div style={{ padding: "12px 14px", background: "#f8fafc", borderBottom: "1px solid #f1f5f9" }}>
+            <AplSparkline
+              communeEvo={commune.apl_evolution}
+              twinEvo={twinData.apl_evolution}
+              communeName={commune.nom}
+              twinName={twin.nom}
+            />
+          </div>
+        )}
+
+        {/* Static rows */}
+        <StaticRow
+          label="Pauvreté"
+          myValue={commune.score_detail.pauvrete !== null ? (commune.score_detail.pauvrete * 100).toFixed(1) + "%" : "N/D"}
+          twinValue={twinData.score_detail.pauvrete !== null ? (twinData.score_detail.pauvrete * 100).toFixed(1) + "%" : "N/D"}
+          lowerIsBetter
+        />
+        <StaticRow
+          label="75+ isolées"
+          myValue={(commune.score_detail.pct_75_seuls * 100).toFixed(1) + "%"}
+          twinValue={(twinData.score_detail.pct_75_seuls * 100).toFixed(1) + "%"}
+          lowerIsBetter
+        />
+        <StaticRow
+          label="Urgences"
+          myValue={commune.score_detail.temps_urgences_min.toFixed(0) + " min"}
+          twinValue={twinData.score_detail.temps_urgences_min.toFixed(0) + " min"}
+          lowerIsBetter
+          last
+        />
+      </div>
+    </div>
+  );
+}
+
+function CompareValue({ myVal, twinVal, lowerIsBetter, format }: { myVal: number; twinVal: number; lowerIsBetter: boolean; format: (v: number) => string }) {
+  const twinBetter = lowerIsBetter ? twinVal < myVal : twinVal > myVal;
+  return (
+    <span style={{ fontWeight: 600, fontSize: 14, color: twinBetter ? "#16a34a" : "#DC2626" }}>
+      {format(twinVal)}
+    </span>
+  );
+}
+
+function StaticRow({ label, myValue, twinValue, lowerIsBetter, last = false }: { label: string; myValue: string; twinValue: string; lowerIsBetter?: boolean; last?: boolean }) {
+  const myNum = parseFloat(myValue);
+  const twinNum = parseFloat(twinValue);
+  const twinBetter = !isNaN(myNum) && !isNaN(twinNum) ? (lowerIsBetter ? twinNum < myNum : twinNum > myNum) : null;
+  const help = INDICATOR_HELP[label];
+
+  return (
+    <div style={{ display: "flex", alignItems: "center", padding: "10px 14px", borderBottom: last ? "none" : "1px solid #f1f5f9" }}>
+      <div style={{ width: 14, marginRight: 8 }} />
+      <span style={{ flex: 1, fontSize: 13, color: "#64748b", display: "flex", alignItems: "center" }}>{label}{help && <InfoTooltip text={help} />}</span>
+      <span style={{ fontWeight: 600, fontSize: 14, marginRight: 6 }}>{myValue}</span>
+      <span style={{ fontSize: 11, color: "#94a3b8", marginRight: 12 }}>vs</span>
+      <span style={{
+        fontWeight: 600, fontSize: 14,
+        color: twinBetter === null ? "#64748b" : twinBetter ? "#16a34a" : "#DC2626",
+      }}>
+        {twinValue}
+      </span>
+    </div>
+  );
+}
+
 export function TwinPanel({ twin, commune }: TwinPanelProps) {
   const { data: twinData, loading } = useCommuneData(twin.code);
 
@@ -189,6 +331,9 @@ export function TwinPanel({ twin, commune }: TwinPanelProps) {
 
       {/* Score */}
       {loading ? <SkeletonCard className="h-6" /> : twinData ? <ScoreGauge classe={twinData.classe} score={twinData.score} /> : null}
+
+      {/* Mini-map */}
+      {twinData?.coords && <MiniMap nom={twin.nom} coords={twinData.coords} />}
 
       {/* Actions */}
       {twin.actions.length > 0 && (
@@ -214,50 +359,11 @@ export function TwinPanel({ twin, commune }: TwinPanelProps) {
         </div>
       )}
 
-      {/* Sparkline APL evolution */}
-      {twinData && (
-        <AplSparkline
-          communeEvo={commune.apl_evolution}
-          twinEvo={twinData.apl_evolution}
-          communeName={commune.nom}
-          twinName={twin.nom}
-        />
-      )}
-
-      {/* Indicateurs comparés */}
+      {/* Indicateurs comparés — expandable card pattern */}
       {loading ? (
         <SkeletonCard className="h-24" />
       ) : twinData ? (
-        <div>
-          <div style={{ fontSize: 11, fontWeight: 600, color: "#475569", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
-            Indicateurs comparés
-          </div>
-          <div style={{ fontSize: 10, color: "#94a3b8", display: "flex", marginBottom: 2 }}>
-            <span style={{ flex: 1 }} />
-            <span style={{ width: 55, textAlign: "right" }}>Vous</span>
-            <span style={{ width: 30, textAlign: "center" }} />
-            <span style={{ width: 55, textAlign: "right" }}>Jumelle</span>
-          </div>
-          <CompareRow label="APL" myValue={commune.score_detail.apl.toFixed(1)} twinValue={twinData.score_detail.apl.toFixed(1)} />
-          <CompareRow
-            label="Pauvreté"
-            myValue={commune.score_detail.pauvrete !== null ? (commune.score_detail.pauvrete * 100).toFixed(1) + "%" : "N/D"}
-            twinValue={twinData.score_detail.pauvrete !== null ? (twinData.score_detail.pauvrete * 100).toFixed(1) + "%" : "N/D"}
-            lowerIsBetter
-          />
-          <CompareRow
-            label="75+ isolées"
-            myValue={(commune.score_detail.pct_75_seuls * 100).toFixed(1) + "%"}
-            twinValue={(twinData.score_detail.pct_75_seuls * 100).toFixed(1) + "%"}
-            lowerIsBetter
-          />
-          <CompareRow
-            label="Urgences"
-            myValue={commune.score_detail.temps_urgences_min.toFixed(0) + " min"}
-            twinValue={twinData.score_detail.temps_urgences_min.toFixed(0) + " min"}
-            lowerIsBetter
-          />
-        </div>
+        <ExpandableIndicators commune={commune} twin={twin} twinData={twinData} />
       ) : null}
 
       {/* Résumé médecins jumelle */}
