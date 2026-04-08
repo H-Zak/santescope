@@ -77,7 +77,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Fix null-safety crashes (Paris edge case), smoke test script, gitignore surgery
+- [x] 04-01-PLAN.md — Fix null-safety crashes (Paris edge case), smoke test script, gitignore surgery
 - [ ] 04-02-PLAN.md — GitHub repo, README, Reveal.js pitch slides, Vercel deploy
 
 ## Parallel Execution

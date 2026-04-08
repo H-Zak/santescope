@@ -54,7 +54,7 @@
 ### Deployment
 
 - [ ] **DEP-01**: App deployed on Vercel with public URL
-- [ ] **DEP-02**: JSONs served from public/data/ directory (no backend)
+- [x] **DEP-02**: JSONs served from public/data/ directory (no backend)
 - [ ] **DEP-03**: Code on GitHub repository
 
 ## v2 Requirements (Post-Hackathon)
