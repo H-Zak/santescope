@@ -7,9 +7,13 @@ interface DoublePanelLayoutProps {
 
 export function DoublePanelLayout({ left, right }: DoublePanelLayoutProps) {
   return (
-    <div className="flex flex-col md:flex-row gap-8 px-8 py-6">
-      <div className="flex-1 min-w-0">{left}</div>
-      <div className="flex-1 min-w-0">{right}</div>
+    <div className="flex flex-col md:flex-row min-h-[calc(100vh-52px-72px)]">
+      <div className="flex-1 min-w-0 p-5 md:px-6 bg-white md:border-r border-slate-200">
+        {left}
+      </div>
+      <div className="flex-1 min-w-0 p-5 md:px-6" style={{ background: "#fafcff" }}>
+        {right}
+      </div>
     </div>
   );
 }

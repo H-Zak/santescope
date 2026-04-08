@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useSearchIndex } from "@/hooks/useSearchIndex";
 import { filterIndex } from "@/lib/search";
 import { DPE_COLORS, DPE_TEXT_COLORS } from "@/lib/constants";
+import { toHealthScore } from "@/lib/score";
 import { IndexEntry } from "@/lib/types";
 
 interface SearchBarProps {
@@ -188,6 +189,9 @@ export function SearchBar({ fullScreen = false }: SearchBarProps) {
                     Dép. {entry.dept} · {entry.pop.toLocaleString("fr-FR")} hab.
                   </div>
                 </div>
+                {entry.score !== null && (
+                  <span className="text-xs text-slate-500 shrink-0">{toHealthScore(entry.score)}/10</span>
+                )}
               </div>
             ))
           )}

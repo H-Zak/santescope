@@ -6,23 +6,45 @@ interface MiniMapProps {
 export function MiniMap({ nom, coords: _coords }: MiniMapProps) {
   return (
     <div
-      className="w-full rounded-lg border border-slate-200 relative overflow-hidden"
-      style={{ height: 100, background: "#f0fdf4" }}
+      style={{
+        width: "100%",
+        height: 70,
+        background: "#f0fdf4",
+        borderRadius: 10,
+        border: "1px solid #e2e8f0",
+        position: "relative",
+        overflow: "hidden",
+      }}
     >
       <svg
         viewBox="0 0 200 100"
         width="100%"
         height="100%"
-        style={{ position: "absolute", top: 0, left: 0, opacity: 0.15 }}
+        style={{ position: "absolute" }}
       >
         <path
           d="M20,80 Q40,20 80,40 T140,30 T180,60 Q190,80 160,85 T100,90 T40,85 Z"
           fill="#0F766E"
+          opacity="0.1"
+        />
+        <path
+          d="M20,80 Q40,20 80,40 T140,30 T180,60 Q190,80 160,85 T100,90 T40,85 Z"
+          fill="none"
+          stroke="#0F766E"
+          strokeWidth="0.8"
+          opacity="0.3"
         />
       </svg>
       <div
-        style={{ position: "relative" }}
-        className="flex flex-col items-center justify-center h-full gap-1"
+        style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 3,
+        }}
       >
         <div
           style={{
@@ -34,9 +56,7 @@ export function MiniMap({ nom, coords: _coords }: MiniMapProps) {
             boxShadow: "0 0 0 2px #0F766E",
           }}
         />
-        <span
-          style={{ fontSize: 10, fontWeight: 600, color: "#0F766E" }}
-        >
+        <span style={{ fontSize: 10, fontWeight: 600, color: "#0F766E" }}>
           {nom}
         </span>
       </div>

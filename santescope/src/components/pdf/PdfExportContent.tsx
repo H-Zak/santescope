@@ -2,6 +2,7 @@
 
 import { CommuneData } from "@/lib/types";
 import { DPE_COLORS, DPE_TEXT_COLORS, DPE_LABELS } from "@/lib/constants";
+import { toHealthScore } from "@/lib/score";
 
 interface PdfExportContentProps {
   commune: CommuneData;
@@ -176,7 +177,7 @@ export function PdfExportContent({ commune }: PdfExportContentProps) {
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 14, fontWeight: 500 }}>Score global santé</div>
               <div style={{ fontSize: 12, color: "#999", marginTop: 2 }}>
-                {classe ? `${DPE_LABELS[classe]} — ${score !== null ? `${score.toFixed(1)}/10` : ""}` : "Données insuffisantes"}
+                {classe ? `${DPE_LABELS[classe]} — ${score !== null ? `${toHealthScore(score)}/10` : ""}` : "Données insuffisantes"}
               </div>
             </div>
             {/* DPE strip */}

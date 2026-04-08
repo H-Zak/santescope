@@ -5,22 +5,29 @@ export default function LandingPage() {
     <main
       className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
       style={{
-        background: "linear-gradient(180deg, #f0fdf4 0%, #ffffff 60%)",
+        background:
+          "radial-gradient(ellipse at 50% 0%, #ecfdf5 0%, #f8fafc 50%, #fff 100%)",
       }}
     >
       <div className="flex flex-col items-center gap-6 w-full max-w-xl">
         {/* Logo */}
         <div
-          className="flex items-center justify-center rounded-2xl"
-          style={{ width: 56, height: 56, background: "#0F766E" }}
+          className="flex items-center justify-center"
+          style={{
+            width: 60,
+            height: 60,
+            borderRadius: 16,
+            background: "linear-gradient(135deg, #0F766E, #0d9488)",
+            boxShadow: "0 8px 32px rgba(15,118,110,0.2)",
+          }}
         >
           <svg
-            width="28"
-            height="28"
+            width="30"
+            height="30"
             viewBox="0 0 24 24"
             fill="none"
             stroke="#fff"
-            strokeWidth="2"
+            strokeWidth="2.2"
             strokeLinecap="round"
           >
             <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
@@ -30,28 +37,53 @@ export default function LandingPage() {
         {/* Title */}
         <div className="text-center">
           <h1
-            className="font-semibold text-[#0F766E]"
-            style={{ fontSize: 28, lineHeight: 1.15 }}
+            style={{
+              fontSize: 42,
+              fontWeight: 800,
+              color: "#0F766E",
+              margin: 0,
+              letterSpacing: "-0.03em",
+            }}
           >
             SanteScope
           </h1>
           <p
-            className="text-slate-600 mt-2"
-            style={{ fontSize: 20, lineHeight: 1.4 }}
+            style={{
+              fontSize: 17,
+              color: "#64748b",
+              marginTop: 10,
+              textAlign: "center",
+              maxWidth: 420,
+              lineHeight: 1.5,
+            }}
           >
-            Le diagnostic santé de votre commune
+            Diagnostic territorial de santé.
+            <br />
+            Comparez votre commune, découvrez ses jumelles.
           </p>
         </div>
 
         {/* Search bar */}
-        <div className="w-full">
+        <div className="w-full mt-4">
           <SearchBar fullScreen />
         </div>
 
-        {/* Stats row */}
-        <p className="text-slate-400 text-center" style={{ fontSize: 12 }}>
-          35 000 communes · 200 000 médecins · 9 sources open data
-        </p>
+        {/* Sources */}
+        <div className="flex gap-8 mt-12 flex-wrap justify-center">
+          {[
+            ["INSEE", "Démographie"],
+            ["DREES", "Offre de soins"],
+            ["SPF", "Épidémiologie"],
+            ["SNDS", "Parcours"],
+          ].map(([src, desc]) => (
+            <div key={src} className="text-center">
+              <div style={{ fontSize: 13, fontWeight: 600, color: "#0F766E" }}>
+                {src}
+              </div>
+              <div style={{ fontSize: 10, color: "#94a3b8" }}>{desc}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </main>
   );

@@ -37,7 +37,12 @@ export function PdfDownloadButton({ communeCode, communeNom }: PdfDownloadButton
     <button
       onClick={handleDownload}
       disabled={loading}
-      className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 text-sm text-slate-600 bg-white hover:bg-slate-50 hover:border-slate-300 transition-colors disabled:opacity-60 disabled:cursor-not-allowed font-medium"
+      style={{
+        padding: "6px 14px", borderRadius: 8, border: "none",
+        background: "#0F766E", cursor: loading ? "not-allowed" : "pointer",
+        fontSize: 12, color: "#fff", fontWeight: 600, fontFamily: "inherit",
+        display: "flex", alignItems: "center", gap: 5, opacity: loading ? 0.6 : 1,
+      }}
       title={`Télécharger le diagnostic de ${communeNom}`}
     >
       {loading ? (
