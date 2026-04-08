@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SanteScope — Pitch</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/theme/white.css" />
+
+  <style>
+    :root {
+      --teal: #0F766E;
+      --teal-light: #14b8a6;
+      --teal-bg: #f0fdfa;
+      --gray: #374151;
+      --gray-light: #6b7280;
+      --gray-bg: #f9fafb;
+    }
+
+    .reveal {
+      font-family: 'Inter', sans-serif;
+      color: var(--gray);
+    }
+
+    .reveal h1, .reveal h2, .reveal h3 {
+      font-family: 'Inter', sans-serif;
+      color: var(--gray);
+      text-transform: none;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+    }
+
+    .reveal h1 { font-size: 2.4em; }
+    .reveal h2 { font-size: 1.6em; color: var(--teal); }
+    .reveal h3 { font-size: 1.2em; font-weight: 600; }
+
+    .reveal .slides section {
+      text-align: left;
+    }
+
+    .reveal .slides section.center-slide {
+      text-align: center;
+    }
+
+    /* Logo / Brand */
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--teal);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .brand-name {
+      font-size: 2.2em;
+      font-weight: 800;
+      color: var(--gray);
+    }
+
+    .brand-name span {
+      color: var(--teal);
+    }
+
+    .tagline {
+      font-size: 1.1em;
+      color: var(--gray-light);
+      margin-top: 8px;
+      font-weight: 400;
+    }
+
+    /* Score badge (visual) */
+    .score-demo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--teal-bg);
+      border: 2px solid var(--teal-light);
+      border-radius: 12px;
+      padding: 10px 20px;
+      margin: 8px 0;
+    }
+
+    .score-badge {
+      background: var(--teal);
+      color: white;
+      font-size: 1.4em;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 8px;
+    }
+
+    /* Stat blocks */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .stat-card {
+      background: var(--gray-bg);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2em;
+      font-weight: 800;
+      color: var(--teal);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.75em;
+      color: var(--gray-light);
+      margin-top: 4px;
+    }
+
+    /* Data table */
+    .reveal table {
+      font-size: 0.75em;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .reveal table th {
+      background: var(--teal);
+      color: white;
+      padding: 8px 12px;
+      font-weight: 600;
+    }
+
+    .reveal table td {
+      padding: 6px 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .reveal table tr:hover td {
+      background: var(--teal-bg);
+    }
+
+    /* Score components */
+    .score-components {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .component-card {
+      background: var(--gray-bg);
+      border-left: 4px solid var(--teal);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .component-title {
+      font-weight: 600;
+      font-size: 0.85em;
+      color: var(--gray);
+    }
+
+    .component-source {
+      font-size: 0.7em;
+      color: var(--gray-light);
+      margin-top: 2px;
+    }
+
+    /* Impact items */
+    .impact-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 12px;
+    }
+
+    .impact-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 0.9em;
+    }
+
+    .impact-list li:last-child {
+      border-bottom: none;
+    }
+
+    .impact-icon {
+      font-size: 1.4em;
+      flex-shrink: 0;
+    }
+
+    /* Stack pills */
+    .stack-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .stack-pill {
+      background: var(--teal-bg);
+      border: 1px solid var(--teal-light);
+      color: var(--teal);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.85em;
+      font-weight: 600;
+    }
+
+    /* Link highlight */
+    .demo-link {
+      display: inline-block;
+      background: var(--teal);
+      color: white !important;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9em;
+      margin-top: 16px;
+      text-decoration: none;
+    }
+
+    /* Problem stat */
+    .problem-stat {
+      font-size: 2.8em;
+      font-weight: 800;
+      color: #ef4444;
+      margin: 12px 0 4px;
+    }
+
+    /* Slide number indicator */
+    .slide-label {
+      font-size: 0.6em;
+      color: var(--teal);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Slide 1: Title -->
+      <section class="center-slide">
+        <div class="brand-logo" style="justify-content: center; display: flex; margin-bottom: 20px;">
+          <div class="brand-icon">S</div>
+          <div style="text-align: left; margin-left: 12px;">
+            <div class="brand-name">Sante<span>Scope</span></div>
+            <div class="tagline">Le jumeau numerique de la sante communale</div>
+          </div>
+        </div>
+        <p style="color: var(--gray-light); font-size: 0.85em; margin-top: 24px;">
+          Open Data University — Defi Sante et Territoires<br />
+          Fondation Roche · Avril 2026
+        </p>
+        <a href="https://santescope.vercel.app" class="demo-link" target="_blank">
+          santescope.vercel.app
+        </a>
+      </section>
+
+      <!-- Slide 2: Problem -->
+      <section>
+        <div class="slide-label">Le Probleme</div>
+        <h2>Les deserts medicaux s'aggravent</h2>
+        <div class="problem-stat">6 millions</div>
+        <p style="font-size: 0.9em; margin: 0 0 16px;">de Francais sans medecin traitant attitré</p>
+        <ul style="font-size: 0.85em; line-height: 1.8;">
+          <li>Les indicateurs existent (APL, RPPS, FiLoSoFi...) mais sont fragmentes sur 9 sources distinctes</li>
+          <li>Les elus locaux n'ont pas de synthese actionnable pour leur commune</li>
+          <li>Aucun outil ne montre "ce qu'une commune similaire a fait pour s'en sortir"</li>
+        </ul>
+        <p style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 10px 16px; border-radius: 0 8px 8px 0; font-size: 0.8em; margin-top: 16px; color: #7f1d1d;">
+          CartoSante, Geodes, AtlaSante, ORS-IdF, APUR DataPortraits — aucun ne combine diagnostic + prediction + jumelles + recommandations actionnables.
+        </p>
+      </section>
+
+      <!-- Slide 3: Solution -->
+      <section>
+        <div class="slide-label">La Solution</div>
+        <h2>Diagnostic automatique + Jumelles territoriales</h2>
+        <p style="font-size: 0.85em; color: var(--gray-light); margin-bottom: 16px;">
+          SanteScope montre le probleme ET ce qu'une commune similaire a fait pour le resoudre.
+        </p>
+        <div class="score-components">
+          <div class="component-card">
+            <div class="impact-icon">🔍</div>
+            <div class="component-title">Diagnostic</div>
+            <div class="component-source">Score 0-10, 4 composantes, projection domino</div>
+          </div>
+          <div class="component-card">
+            <div class="impact-icon">🤝</div>
+            <div class="component-title">Jumelles</div>
+            <div class="component-source">Communes similaires ayant ameliore leur situation</div>
+          </div>
+          <div class="component-card">
+            <div class="impact-icon">⚖️</div>
+            <div class="component-title">Comparaison</div>
+            <div class="component-source">Mode libre entre 2 communes quelconques</div>
+          </div>
+          <div class="component-card">
+            <div class="impact-icon">📄</div>
+            <div class="component-title">Export PDF</div>
+            <div class="component-source">Rapport pour le conseil municipal</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 4: Demo -->
+      <section>
+        <div class="slide-label">Demo Live</div>
+        <h2>SanteScope en action</h2>
+        <div class="score-demo">
+          <div class="score-badge">7.2</div>
+          <div>
+            <div style="font-weight: 600; font-size: 0.9em;">Saint-Quentin (02691)</div>
+            <div style="font-size: 0.75em; color: var(--gray-light);">Vulnerabilite E · Desert medical detecte</div>
+          </div>
+        </div>
+        <ul style="font-size: 0.8em; line-height: 2; margin-top: 16px;">
+          <li><strong>1.</strong> Recherche "Saint-Quentin" → autocomplete instantane</li>
+          <li><strong>2.</strong> Diagnostic : score, projection domino, manques de specialistes</li>
+          <li><strong>3.</strong> Jumelle : Maubeuge (59392) a installe une MSP en 2019 → +2.3 APL</li>
+          <li><strong>4.</strong> Comparaison libre, export PDF</li>
+        </ul>
+        <a href="https://santescope.vercel.app/commune/02691" class="demo-link" target="_blank" style="font-size: 0.8em;">
+          Voir le diagnostic de Saint-Quentin
+        </a>
+      </section>
+
+      <!-- Slide 5: Data -->
+      <section>
+        <div class="slide-label">Donnees Ouvertes</div>
+        <h2>9 sources croises, 34 969 communes</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>Producteur</th>
+              <th>Utilisation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>APL</td><td>DREES</td><td>Accessibilite aux soins</td></tr>
+            <tr><td>RPPS</td><td>Sante.fr</td><td>Effectifs medicaux</td></tr>
+            <tr><td>FiLoSoFi 2018</td><td>INSEE</td><td>Taux de pauvrete</td></tr>
+            <tr><td>RP 2020</td><td>INSEE</td><td>Structure d'age (75+)</td></tr>
+            <tr><td>SAE Urgences</td><td>DREES</td><td>Acces aux urgences</td></tr>
+            <tr><td>FINESS</td><td>Sante.gouv</td><td>Etablissements sante</td></tr>
+            <tr><td>Pathologies</td><td>Ameli</td><td>Prevalence par dept</td></tr>
+            <tr><td>Demo medecins</td><td>DREES</td><td>Age des medecins</td></tr>
+            <tr><td>La Poste</td><td>La Poste</td><td>Code postal → commune</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Slide 6: Methodology -->
+      <section>
+        <div class="slide-label">Methodologie</div>
+        <h2>Score transparent + KNN jumelles</h2>
+        <p style="font-size: 0.8em; color: var(--gray-light); margin-bottom: 12px;">
+          Score de vulnerabilite 0-10 — 4 composantes normalisees (min-max), poids egaux (explicable en 10s au jury).
+        </p>
+        <div class="score-components">
+          <div class="component-card">
+            <div class="component-title">APL inverse</div>
+            <div class="component-source">Accessibilite praticiens · DREES</div>
+          </div>
+          <div class="component-card">
+            <div class="component-title">Taux de pauvrete</div>
+            <div class="component-source">Revenu median · INSEE FiLoSoFi</div>
+          </div>
+          <div class="component-card">
+            <div class="component-title">Isolement 75+</div>
+            <div class="component-source">Part des 75+ seuls · RP2020</div>
+          </div>
+          <div class="component-card">
+            <div class="component-title">Temps urgences</div>
+            <div class="component-source">Acces SAE · DREES</div>
+          </div>
+        </div>
+        <p style="font-size: 0.75em; margin-top: 14px; color: var(--gray-light);">
+          <strong>Jumelles :</strong> KNN sur 5 features normalisees avec priorite regionale · Notebooks Python reproduisibles dans <code>notebooks/</code>
+        </p>
+      </section>
+
+      <!-- Slide 7: Impact -->
+      <section>
+        <div class="slide-label">Impact</div>
+        <h2>Ce qu'un elu peut faire avec SanteScope</h2>
+        <ul class="impact-list">
+          <li>
+            <span class="impact-icon">🗺️</span>
+            <div>
+              <strong>Identifier ses fragilites</strong> — Score 0-10 avec detail des 4 composantes pour comprendre la source du probleme
+            </div>
+          </li>
+          <li>
+            <span class="impact-icon">📡</span>
+            <div>
+              <strong>Anticiper les departs en retraite</strong> — Projection domino 2030 : % medecins 55+ dans la commune et le departement
+            </div>
+          </li>
+          <li>
+            <span class="impact-icon">🤝</span>
+            <div>
+              <strong>Decouvrir des solutions testees ailleurs</strong> — Jumelles qui ont ameliore leur APL avec des actions concretes (MSP, attractivite, CPTS)
+            </div>
+          </li>
+          <li>
+            <span class="impact-icon">📄</span>
+            <div>
+              <strong>Exporter un rapport PDF</strong> — Document pret pour le conseil municipal ou un dossier de subvention
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Slide 8: Stack -->
+      <section>
+        <div class="slide-label">Stack Technique</div>
+        <h2>Statique, rapide, gratuit</h2>
+        <p style="font-size: 0.85em; color: var(--gray-light); margin-bottom: 16px;">
+          Architecture 100% statique : notebooks Python generent les JSONs → Vercel sert 34 969 fichiers via CDN. Pas de backend, pas de cout.
+        </p>
+        <div class="stack-grid">
+          <span class="stack-pill">Next.js 16</span>
+          <span class="stack-pill">TypeScript</span>
+          <span class="stack-pill">Tailwind CSS</span>
+          <span class="stack-pill">shadcn/ui</span>
+          <span class="stack-pill">html2canvas</span>
+          <span class="stack-pill">Python + pandas</span>
+          <span class="stack-pill">scikit-learn KNN</span>
+          <span class="stack-pill">Vercel CDN</span>
+        </div>
+        <div class="stats-grid" style="margin-top: 20px;">
+          <div class="stat-card">
+            <div class="stat-number">34 969</div>
+            <div class="stat-label">communes couvertes</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">9</div>
+            <div class="stat-label">sources open data</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">0€</div>
+            <div class="stat-label">cout d'infrastructure</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 9: Team -->
+      <section>
+        <div class="slide-label">Equipe</div>
+        <h2>Un projet, une semaine, une ambition</h2>
+        <p style="font-size: 0.85em; color: var(--gray-light); margin-bottom: 20px;">
+          Hackathon Open Data University · 7-13 Avril 2026 · Defi Sante et Territoires (Fondation Roche)
+        </p>
+        <div class="component-card" style="margin-bottom: 12px;">
+          <div class="component-title" style="font-size: 1em;">Zakariya Hamdouchi</div>
+          <div class="component-source" style="font-size: 0.85em;">Etudiant 42 · Product engineer · Architecture statique, pipeline data, frontend Next.js</div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">6</div>
+            <div class="stat-label">jours de dev</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">155 MB</div>
+            <div class="stat-label">de donnees open data</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">14</div>
+            <div class="stat-label">composants UI</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 10: Thank you + links -->
+      <section class="center-slide">
+        <div class="slide-label" style="text-align: center;">Merci</div>
+        <h1 style="color: var(--teal); margin-bottom: 8px;">SanteScope</h1>
+        <p class="tagline" style="text-align: center; font-size: 1em; margin-bottom: 24px;">
+          Le jumeau numerique de la sante communale
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+          <a href="https://santescope.vercel.app" class="demo-link" target="_blank" style="width: 260px; text-align: center;">
+            Demo — santescope.vercel.app
+          </a>
+          <a href="https://github.com/H-Zak/santescope" class="demo-link" target="_blank"
+             style="background: var(--gray); width: 260px; text-align: center;">
+            Code — github.com/H-Zak/santescope
+          </a>
+        </div>
+        <p style="font-size: 0.7em; color: var(--gray-light); margin-top: 24px;">
+          Toutes les donnees sont open data · 0€ de cout d'infrastructure · 34 969 communes couvertes
+        </p>
+      </section>
+
+    </div>
+  </div>
+
+  <script type="module">
+    import Reveal from 'https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.esm.js';
+
+    const deck = new Reveal({
+      hash: true,
+      controls: true,
+      progress: true,
+      center: false,
+      transition: 'slide',
+      transitionSpeed: 'fast',
+      backgroundTransition: 'none',
+      width: 1100,
+      height: 700,
+      margin: 0.08,
+      minScale: 0.2,
+      maxScale: 2.0,
+    });
+
+    deck.initialize();
+  </script>
+</body>
+</html>
