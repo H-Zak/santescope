@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: In Progress
-last_updated: "2026-04-08T19:45:00.000Z"
+status: Executing Phase 04
+last_updated: "2026-04-08T19:22:45.621Z"
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 10
-  completed_plans: 9
+  completed_plans: 8
 ---
 
 # State: SanteScope
@@ -18,7 +18,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-07)
 
 **Core value:** Show a commune its health problems AND what a similar commune did to fix them
-**Current focus:** Phase 03 — frontend-app
+**Current focus:** Phase 04 — integration-deploy
 
 ## Current Phase
 
@@ -36,7 +36,7 @@ See: .planning/PROJECT.md (updated 2026-04-07)
 | 1 | Data Foundation | **COMPLETE** | 3/3 complete |
 | 2 | Scoring & Clustering | **COMPLETE** | 3/3 complete |
 | 3 | Frontend App | **COMPLETE** | 3/3 complete |
-| 4 | Integration & Deploy | In Progress | 1/2 complete |
+| 4 | Integration & Deploy | Blocked by 3 | 0/2 planned |
 
 ## Completed Plans
 
@@ -91,10 +91,6 @@ See: .planning/PROJECT.md (updated 2026-04-07)
 - CompareView calls useCommuneData twice via independent CommunePanel sub-components (separate loading/error states)
 - PdfExportContent uses visibility:hidden not display:none (html2canvas requirement — display:none elements not capturable)
 - html2canvas imported dynamically to avoid SSR window-is-not-defined crash
-- Paris (75056) APL null: APL data only has arrondissements (75101-75120), city code 75056 has no APL — confirmed by JSON
-- apl_evolution ?? {} at call sites (CommuneView, TwinPanel) preserves component signatures
-- smoke-test.js uses native Node 18+ fetch — zero dependencies, CI-portable
-- public/data/ unblocked from .gitignore (D-06): Vercel CDN can serve 35K precomputed commune JSONs
 
 ### 02-01: Vulnerability Score & Domino Projection (2026-04-08, 7min)
 
@@ -148,7 +144,6 @@ None.
 | Phase 03 P02 | 20min | 2 tasks | 15 files |
 | 03-03 | 20min | 2 | 5 |
 | Phase 03-frontend-app P03 | 20min | 2 tasks | 5 files |
-| Phase 04-integration-deploy P01 | 15min | 2 tasks | 9 files |
 
 ### 03-01: Next.js Bootstrap & Landing Page Search (2026-04-08, 10min)
 
@@ -177,14 +172,5 @@ None.
 - Auto-fixed: domino type mismatch (pct_55_plus not pct_55plus), data_quality "complete" added
 - Key commits: 2fec5c3 (components), a43e9f7 (results page)
 
-### 04-01: Null-Safety Fix & Smoke Test (2026-04-08, 15min)
-
-- types.ts: 6 fields made nullable (apl, temps_urgences_min, has_hopital, has_ehpad, nb_etablissements, apl_evolution)
-- 7 components updated with null guards — Paris (75056) and communes with null APL/urgences render without crash
-- smoke-test.js: validates 5 demo communes + index.json, Paris null assertions, native fetch
-- .gitignore: /public/data/ unblocked — Vercel can now serve 35K pre-computed commune JSONs
-- Key commits: 32cd658 (null-safety), 2773df2 (smoke-test + gitignore)
-- Decisions: apl_evolution ?? {} at call sites; === false for nullable boolean guards; native fetch in smoke test
-
 ---
-*Last updated: 2026-04-08 — after 04-01 execution (null-safety + smoke test)*
+*Last updated: 2026-04-08 — after 03-02 execution (results page + diagnostic components)*
