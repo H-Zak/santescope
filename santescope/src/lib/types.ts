@@ -15,7 +15,7 @@ export interface CommuneData {
   pop: number;
   score: number | null;
   classe: "A" | "B" | "C" | "D" | "E" | null;
-  data_quality: "full" | "partial" | "minimal";
+  data_quality: "complete" | "full" | "partial" | "minimal";
   score_detail: {
     apl: number;
     apl_national: number;
@@ -33,9 +33,10 @@ export interface CommuneData {
   };
   manques: string[] | null;
   domino: {
-    pct_55plus: number;
-    dept_avg: number;
-    pertes_2030: number;
+    medecins_55_plus: number;
+    pct_55_plus: number;
+    pct_55_plus_dept: number;
+    projection_2030: string;
   } | null;
   jumelles: Array<{
     code: string;
