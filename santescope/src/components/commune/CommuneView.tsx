@@ -1,8 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Search } from "lucide-react";
 import { useCommuneData } from "@/hooks/useCommuneData";
+import { useSearchIndex } from "@/hooks/useSearchIndex";
+import { filterIndex } from "@/lib/search";
 import { Header } from "@/components/layout/Header";
 import { DoublePanelLayout } from "@/components/layout/DoublePanelLayout";
 import { DataQualityBanner } from "@/components/commune/DataQualityBanner";
@@ -15,6 +19,8 @@ import { DominoAlert } from "@/components/commune/DominoAlert";
 import { MissingDoctors } from "@/components/commune/MissingDoctors";
 import { TwinPanel } from "@/components/commune/TwinPanel";
 import { TwinsList } from "@/components/commune/TwinsList";
+import { IndexEntry } from "@/lib/types";
+import { DPE_COLORS, DPE_TEXT_COLORS } from "@/lib/constants";
 
 interface CommuneViewProps {
   code: string;
@@ -26,9 +32,168 @@ function SkeletonCard({ className = "" }: { className?: string }) {
   );
 }
 
+function InlineScoreBadge({ classe }: { classe: string | null }) {
+  if (!classe) {
+    return (
+      <span
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 20,
+          height: 16,
+          borderRadius: 3,
+          background: "#CBD5E1",
+          color: "#475569",
+          fontSize: 9,
+          fontWeight: 700,
+          flexShrink: 0,
+        }}
+      >
+        –
+      </span>
+    );
+  }
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 20,
+        height: 16,
+        borderRadius: 3,
+        background: DPE_COLORS[classe] ?? "#CBD5E1",
+        color: DPE_TEXT_COLORS[classe] ?? "#FFFFFF",
+        fontSize: 9,
+        fontWeight: 700,
+        flexShrink: 0,
+      }}
+    >
+      {classe}
+    </span>
+  );
+}
+
+function CompareSearchInline({
+  currentCode,
+}: {
+  currentCode: string;
+}) {
+  const router = useRouter();
+  const { index } = useSearchIndex();
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<IndexEntry[]>([]);
+  const [open, setOpen] = useState(false);
+  const [highlighted, setHighlighted] = useState(-1);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleChange = useCallback(
+    (value: string) => {
+      setQuery(value);
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => {
+        if (!index || !value.trim()) {
+          setResults([]);
+          setOpen(false);
+          return;
+        }
+        const filtered = filterIndex(index, value);
+        setResults(filtered);
+        setOpen(true);
+        setHighlighted(-1);
+      }, 150);
+    },
+    [index]
+  );
+
+  const selectEntry = useCallback(
+    (entry: IndexEntry) => {
+      setOpen(false);
+      setQuery(entry.nom);
+      router.push(`/comparer/${currentCode}/${entry.code}`);
+    },
+    [router, currentCode]
+  );
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!open || results.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setHighlighted((h) => Math.min(h + 1, results.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setHighlighted((h) => Math.max(h - 1, 0));
+    } else if (e.key === "Enter" && highlighted >= 0) {
+      e.preventDefault();
+      selectEntry(results[highlighted]);
+    } else if (e.key === "Escape") {
+      setOpen(false);
+    }
+  };
+
+  return (
+    <div className="relative">
+      <div className="flex items-center bg-white border-2 rounded-xl px-3 h-10 gap-2 transition-colors shadow-sm focus-within:border-[#0F766E] border-slate-200">
+        <Search size={16} className="text-slate-400 shrink-0" />
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder="Rechercher une commune..."
+          value={query}
+          onChange={(e) => handleChange(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onFocus={() => {
+            if (results.length > 0) setOpen(true);
+          }}
+          className="flex-1 bg-transparent outline-none text-sm text-slate-800 placeholder:text-slate-400"
+          autoFocus
+        />
+      </div>
+
+      {open && (
+        <div
+          ref={dropdownRef}
+          className="absolute top-[calc(100%+4px)] left-0 right-0 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden z-50"
+        >
+          {results.length === 0 && query.length > 0 ? (
+            <div className="px-4 py-3 text-sm text-slate-500">
+              Aucune commune trouvée — vérifiez le nom ou le code INSEE
+            </div>
+          ) : (
+            results.map((entry, i) => (
+              <div
+                key={entry.code}
+                onMouseDown={() => selectEntry(entry)}
+                onMouseEnter={() => setHighlighted(i)}
+                className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${
+                  i < results.length - 1 ? "border-b border-slate-100" : ""
+                } ${highlighted === i ? "bg-[#f0fdf4]" : "hover:bg-[#f8fafc]"}`}
+              >
+                <InlineScoreBadge classe={entry.classe} />
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium text-slate-800 truncate">
+                    {entry.nom}
+                  </div>
+                  <div className="text-xs text-slate-400">
+                    Dép. {entry.dept} · {entry.pop.toLocaleString("fr-FR")} hab.
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function CommuneView({ code }: CommuneViewProps) {
   const { data, loading, error } = useCommuneData(code);
   const [activeTwin, setActiveTwin] = useState(0);
+  const [showCompareSearch, setShowCompareSearch] = useState(false);
 
   if (loading) {
     return (
@@ -124,12 +289,15 @@ export function CommuneView({ code }: CommuneViewProps) {
         </p>
       )}
 
-      <button
-        disabled
-        className="mt-2 px-4 py-2 rounded-lg border border-slate-200 text-sm text-slate-400 cursor-not-allowed"
-      >
-        Télécharger le rapport (bientôt)
-      </button>
+      <div className="flex flex-col gap-2 mt-2">
+        <button
+          onClick={() => setShowCompareSearch((v) => !v)}
+          className="px-4 py-2 rounded-lg border border-teal-600 text-sm text-teal-700 bg-white hover:bg-teal-50 transition-colors font-medium"
+        >
+          Comparer avec...
+        </button>
+        {showCompareSearch && <CompareSearchInline currentCode={code} />}
+      </div>
     </div>
   );
 
