@@ -121,9 +121,10 @@ export function ScoreDetail({ scoreDetail, aplEvolution, communeName }: ScoreDet
   const rows: Row[] = [
     {
       label: "Accès aux soins (APL)",
-      value: scoreDetail.apl.toFixed(1),
+      value: scoreDetail.apl != null ? scoreDetail.apl.toFixed(1) : "Non disponible",
       national: scoreDetail.apl_national.toFixed(1),
       higherIsBetter: true,
+      unavailable: scoreDetail.apl == null,
     },
     {
       label: "Taux de pauvreté",
@@ -143,9 +144,10 @@ export function ScoreDetail({ scoreDetail, aplEvolution, communeName }: ScoreDet
     },
     {
       label: "Temps d'accès urgences",
-      value: scoreDetail.temps_urgences_min.toFixed(0) + " min",
+      value: scoreDetail.temps_urgences_min != null ? scoreDetail.temps_urgences_min.toFixed(0) + " min" : "Non disponible",
       national: scoreDetail.temps_urgences_national.toFixed(0) + " min",
       higherIsBetter: false,
+      unavailable: scoreDetail.temps_urgences_min == null,
     },
   ];
 

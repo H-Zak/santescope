@@ -24,7 +24,7 @@ interface Pathway {
 const PATHWAYS: Pathway[] = [
   {
     id: "msp",
-    trigger: (d) => !d.msp_presente && d.pop > 3000,
+    trigger: (d) => d.msp_presente === false && d.pop > 3000,
     title: "Créer une Maison de Santé (MSP)",
     urgency: "haute",
     icon: "🏥",
@@ -79,7 +79,7 @@ const PATHWAYS: Pathway[] = [
   },
   {
     id: "ehpad",
-    trigger: (d) => !d.has_ehpad && d.score_detail.pct_75_seuls > 0.10,
+    trigger: (d) => d.has_ehpad === false && d.score_detail.pct_75_seuls > 0.10,
     title: "Renforcer l'offre pour les 75+",
     urgency: "moyenne",
     icon: "🏠",

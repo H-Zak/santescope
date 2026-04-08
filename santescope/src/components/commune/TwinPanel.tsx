@@ -238,17 +238,21 @@ function ExpandableIndicators({
             <polyline points="9 18 15 12 9 6" />
           </svg>
           <span style={{ flex: 1, fontSize: 13, color: "#64748b", display: "flex", alignItems: "center" }}>APL<InfoTooltip text={INDICATOR_HELP["APL"]} /></span>
-          <span style={{ fontWeight: 600, fontSize: 14, marginRight: 6 }}>{commune.score_detail.apl.toFixed(1)}</span>
+          <span style={{ fontWeight: 600, fontSize: 14, marginRight: 6 }}>{commune.score_detail.apl != null ? commune.score_detail.apl.toFixed(1) : "N/D"}</span>
           <span style={{ fontSize: 11, color: "#94a3b8", marginRight: 12 }}>vs</span>
-          <CompareValue myVal={commune.score_detail.apl} twinVal={twinData.score_detail.apl} lowerIsBetter={false} format={(v) => v.toFixed(1)} />
+          {commune.score_detail.apl != null && twinData.score_detail.apl != null ? (
+            <CompareValue myVal={commune.score_detail.apl} twinVal={twinData.score_detail.apl} lowerIsBetter={false} format={(v) => v.toFixed(1)} />
+          ) : (
+            <span style={{ fontWeight: 600, fontSize: 14, color: "#64748b" }}>N/D</span>
+          )}
         </div>
 
         {/* Expandable APL sparkline panel */}
         {aplOpen && (
           <div style={{ padding: "12px 14px", background: "#f8fafc", borderBottom: "1px solid #f1f5f9" }}>
             <AplSparkline
-              communeEvo={commune.apl_evolution}
-              twinEvo={twinData.apl_evolution}
+              communeEvo={commune.apl_evolution ?? {}}
+              twinEvo={twinData.apl_evolution ?? {}}
               communeName={commune.nom}
               twinName={twin.nom}
             />
@@ -270,8 +274,8 @@ function ExpandableIndicators({
         />
         <StaticRow
           label="Urgences"
-          myValue={commune.score_detail.temps_urgences_min.toFixed(0) + " min"}
-          twinValue={twinData.score_detail.temps_urgences_min.toFixed(0) + " min"}
+          myValue={commune.score_detail.temps_urgences_min != null ? commune.score_detail.temps_urgences_min.toFixed(0) + " min" : "N/D"}
+          twinValue={twinData.score_detail.temps_urgences_min != null ? twinData.score_detail.temps_urgences_min.toFixed(0) + " min" : "N/D"}
           lowerIsBetter
           last
         />

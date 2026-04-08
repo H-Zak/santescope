@@ -17,13 +17,13 @@ export interface CommuneData {
   classe: "A" | "B" | "C" | "D" | "E" | null;
   data_quality: "complete" | "full" | "partial" | "minimal";
   score_detail: {
-    apl: number;
+    apl: number | null;
     apl_national: number;
     pauvrete: number | null;
     pauvrete_national: number;
     pct_75_seuls: number;
     pct_75_seuls_national: number;
-    temps_urgences_min: number;
+    temps_urgences_min: number | null;
     temps_urgences_national: number;
   };
   medecins: {
@@ -51,10 +51,10 @@ export interface CommuneData {
     has_msp: boolean;
   }>;
   msp_presente: boolean;
-  has_hopital: boolean;
-  has_ehpad: boolean;
-  nb_etablissements: number;
-  apl_evolution: Record<string, number>;
+  has_hopital: boolean | null;
+  has_ehpad: boolean | null;
+  nb_etablissements: number | null;
+  apl_evolution: Record<string, number> | null;
   pathologies_dept: {
     diabete: number;
     cardiovasculaire: number;

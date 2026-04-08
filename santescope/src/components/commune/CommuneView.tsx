@@ -194,7 +194,7 @@ export function CommuneView({ code }: CommuneViewProps) {
         <ScoreMethodology />
       </div>
       <MiniMap nom={data.nom} coords={data.coords} />
-      <ScoreDetail scoreDetail={data.score_detail} aplEvolution={data.apl_evolution} communeName={data.nom} />
+      <ScoreDetail scoreDetail={data.score_detail} aplEvolution={data.apl_evolution ?? {}} communeName={data.nom} />
       <CommuneEquipments data={data} />
       {data.domino && (
         <DominoAlert domino={data.domino} medecinTotal={data.medecins.total} />

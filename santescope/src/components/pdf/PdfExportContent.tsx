@@ -85,8 +85,8 @@ export function PdfExportContent({ commune }: PdfExportContentProps) {
   const pointsForts: string[] = [];
   const alertes: string[] = [];
 
-  if (sd.apl > sd.apl_national) pointsForts.push("Bonne densité médicale (APL)");
-  else alertes.push("Accès aux soins insuffisant (APL)");
+  if (sd.apl != null && sd.apl > sd.apl_national) pointsForts.push("Bonne densité médicale (APL)");
+  else if (sd.apl != null) alertes.push("Accès aux soins insuffisant (APL)");
 
   if (sd.pauvrete !== null && sd.pauvrete < sd.pauvrete_national) pointsForts.push("Taux de pauvreté inférieur à la moyenne");
   else if (sd.pauvrete !== null) alertes.push("Taux de pauvreté élevé");
@@ -94,8 +94,8 @@ export function PdfExportContent({ commune }: PdfExportContentProps) {
   if (sd.pct_75_seuls < sd.pct_75_seuls_national) pointsForts.push("Faible isolement des personnes âgées");
   else alertes.push("Isolement des 75+ ans supérieur à la moyenne");
 
-  if (sd.temps_urgences_min < sd.temps_urgences_national) pointsForts.push("Accès rapide aux urgences");
-  else alertes.push(`Urgences éloignées (${sd.temps_urgences_min} min)`);
+  if (sd.temps_urgences_min != null && sd.temps_urgences_min < sd.temps_urgences_national) pointsForts.push("Accès rapide aux urgences");
+  else if (sd.temps_urgences_min != null) alertes.push(`Urgences éloignées (${sd.temps_urgences_min} min)`);
 
   if (domino && domino.pct_55_plus > 0.5) alertes.push("Alerte succession médicale critique");
   if (manques && manques.length > 0) alertes.push(`Spécialités manquantes : ${manques.slice(0, 2).join(", ")}`);
@@ -272,13 +272,13 @@ export function PdfExportContent({ commune }: PdfExportContentProps) {
             <div style={{ background: "#1a1a1a", borderRadius: 8, padding: 10 }}>
               <div style={{ fontSize: 11, color: "#888" }}>Urgences</div>
               <div style={{ fontSize: 18, fontWeight: 600, marginTop: 2 }}>
-                {sd.temps_urgences_min} min
+                {sd.temps_urgences_min != null ? `${sd.temps_urgences_min} min` : "N/D"}
               </div>
               <div
                 style={{
                   fontSize: 10,
                   marginTop: 1,
-                  color: sd.temps_urgences_min > sd.temps_urgences_national ? "#EF4444" : "#22C55E",
+                  color: sd.temps_urgences_min != null && sd.temps_urgences_min > sd.temps_urgences_national ? "#EF4444" : "#22C55E",
                 }}
               >
                 vs {sd.temps_urgences_national} min nat.
