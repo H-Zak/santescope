@@ -21,6 +21,8 @@ import { TwinPanel } from "@/components/commune/TwinPanel";
 import { TwinsList } from "@/components/commune/TwinsList";
 import { IndexEntry } from "@/lib/types";
 import { DPE_COLORS, DPE_TEXT_COLORS } from "@/lib/constants";
+import { PdfExportContent } from "@/components/pdf/PdfExportContent";
+import { PdfDownloadButton } from "@/components/pdf/PdfDownloadButton";
 
 interface CommuneViewProps {
   code: string;
@@ -297,6 +299,7 @@ export function CommuneView({ code }: CommuneViewProps) {
           Comparer avec...
         </button>
         {showCompareSearch && <CompareSearchInline currentCode={code} />}
+        <PdfDownloadButton communeCode={data.code} communeNom={data.nom} />
       </div>
     </div>
   );
@@ -305,6 +308,7 @@ export function CommuneView({ code }: CommuneViewProps) {
     <>
       <Header />
       <DoublePanelLayout left={leftPanel} right={rightPanel} />
+      <PdfExportContent commune={data} />
       {data.jumelles.length > 0 && (
         <div className="px-8 pb-8">
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
