@@ -37,6 +37,9 @@ export interface CommuneData {
     pct_55_plus: number;
     pct_55_plus_dept: number;
     projection_2030: string;
+    effectif_dept_2025?: number;
+    trend_cagr?: number;
+    trend_delta_annuel?: number;
   } | null;
   jumelles: Array<{
     code: string;

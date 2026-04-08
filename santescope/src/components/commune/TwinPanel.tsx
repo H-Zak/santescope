@@ -1,30 +1,60 @@
+"use client";
+
+import { useCommuneData } from "@/hooks/useCommuneData";
+import { ScoreBadge } from "@/components/commune/ScoreBadge";
+import { DpeStrip } from "@/components/commune/DpeStrip";
+import { ScoreGauge } from "@/components/commune/ScoreGauge";
+import { ScoreDetail } from "@/components/commune/ScoreDetail";
+import { DominoAlert } from "@/components/commune/DominoAlert";
 import { CommuneData } from "@/lib/types";
 
-type Twin = CommuneData["jumelles"][number];
+type TwinRef = CommuneData["jumelles"][number];
 
 interface TwinPanelProps {
-  twin: Twin;
-  communeApl?: number;
+  twin: TwinRef;
 }
 
-export function TwinPanel({ twin, communeApl }: TwinPanelProps) {
+function SkeletonCard({ className = "" }: { className?: string }) {
+  return <div className={`bg-slate-100 rounded-lg animate-pulse ${className}`} />;
+}
+
+export function TwinPanel({ twin }: TwinPanelProps) {
+  const { data, loading } = useCommuneData(twin.code);
   const aplImproved = twin.apl_apres > twin.apl_avant;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
+      {/* Header: nom + badges */}
       <div className="flex items-center gap-3 flex-wrap">
-        <span className="text-lg font-bold text-slate-800">{twin.nom}</span>
-        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-sky-100 text-sky-700">
-          {Math.round(twin.similarite * 100)}% similaire
-        </span>
-        {twin.has_msp && (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-            MSP installée
-          </span>
+        {data ? (
+          <ScoreBadge classe={data.classe} size={44} />
+        ) : (
+          <ScoreBadge classe={null} size={44} />
         )}
+        <div className="flex-1 min-w-0">
+          <span className="text-lg font-bold text-slate-800">{twin.nom}</span>
+          <div className="flex items-center gap-2 mt-0.5">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-sky-100 text-sky-700">
+              {Math.round(twin.similarite * 100)}% similaire
+            </span>
+            {twin.has_msp && (
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                MSP installée
+              </span>
+            )}
+          </div>
+        </div>
+        {data && <DpeStrip active={data.classe} small />}
       </div>
 
-      {/* Actions réalisées — green card style */}
+      {/* Score gauge - loaded from full data */}
+      {loading ? (
+        <SkeletonCard className="h-8" />
+      ) : data ? (
+        <ScoreGauge classe={data.classe} score={data.score} />
+      ) : null}
+
+      {/* Actions réalisées — the unique value of twins */}
       <div
         style={{
           background: "#f0fdf4",
@@ -46,13 +76,8 @@ export function TwinPanel({ twin, communeApl }: TwinPanelProps) {
         >
           <span
             style={{
-              display: "inline-flex",
-              width: 16,
-              height: 16,
-              borderRadius: "50%",
-              background: "#22C55E",
-              alignItems: "center",
-              justifyContent: "center",
+              display: "inline-flex", width: 16, height: 16, borderRadius: "50%",
+              background: "#22C55E", alignItems: "center", justifyContent: "center",
             }}
           >
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round">
@@ -66,59 +91,45 @@ export function TwinPanel({ twin, communeApl }: TwinPanelProps) {
         ) : (
           twin.actions.map((action, i) => (
             <div key={i} style={{ marginBottom: 4 }}>
-              <span
-                style={{
-                  background: "#dcfce7",
-                  padding: "2px 8px",
-                  borderRadius: 4,
-                  fontSize: 11,
-                  fontWeight: 500,
-                  color: "#166534",
-                }}
-              >
+              <span style={{
+                background: "#dcfce7", padding: "2px 8px", borderRadius: 4,
+                fontSize: 11, fontWeight: 500, color: "#166534",
+              }}>
                 {action}
               </span>
             </div>
           ))
         )}
-      </div>
-
-      {/* Évolution APL */}
-      <div>
-        <p
-          style={{
-            fontSize: 11,
-            fontWeight: 500,
-            color: "#64748b",
-            textTransform: "uppercase",
-            letterSpacing: "0.04em",
-            marginBottom: 8,
-          }}
-        >
-          Évolution APL
-        </p>
-        <div className="flex items-center gap-3">
-          <div className="text-center">
-            <p style={{ fontSize: 11, color: "#64748b" }}>Avant</p>
-            <p style={{ fontSize: 18, fontWeight: 700, color: "#64748b" }}>{twin.apl_avant}</p>
-          </div>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={aplImproved ? "#22C55E" : "#EF4444"} strokeWidth="2.5" strokeLinecap="round">
+        {/* APL evolution */}
+        <div className="flex items-center gap-3 mt-2">
+          <span style={{ fontSize: 11, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+            Évolution APL
+          </span>
+          <span style={{ fontSize: 16, fontWeight: 700, color: "#64748b" }}>{twin.apl_avant}</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={aplImproved ? "#22C55E" : "#EF4444"} strokeWidth="2.5" strokeLinecap="round">
             <line x1="5" y1="12" x2="19" y2="12" />
             <polyline points="12 5 19 12 12 19" />
           </svg>
-          <div className="text-center">
-            <p style={{ fontSize: 11, color: "#64748b" }}>Après</p>
-            <p style={{ fontSize: 18, fontWeight: 700, color: aplImproved ? "#16a34a" : "#EF4444" }}>
-              {twin.apl_apres}
-            </p>
-          </div>
+          <span style={{ fontSize: 16, fontWeight: 700, color: aplImproved ? "#16a34a" : "#EF4444" }}>
+            {twin.apl_apres}
+          </span>
         </div>
-        {communeApl !== undefined && twin.apl_apres > communeApl && (
-          <p style={{ fontSize: 11, color: "#16a34a", marginTop: 6 }}>
-            Cette commune a amélioré son APL au-delà du vôtre ({communeApl.toFixed(1)}) — ses actions sont reproductibles
-          </p>
-        )}
       </div>
+
+      {/* Full diagnostic — same indicators as left panel */}
+      {loading ? (
+        <>
+          <SkeletonCard className="h-20" />
+          <SkeletonCard className="h-16" />
+        </>
+      ) : data ? (
+        <>
+          <ScoreDetail scoreDetail={data.score_detail} />
+          {data.domino && (
+            <DominoAlert domino={data.domino} medecinTotal={data.medecins.total} />
+          )}
+        </>
+      ) : null}
     </div>
   );
 }
