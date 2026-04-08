@@ -204,7 +204,7 @@ export function CommuneView({ code }: CommuneViewProps) {
       </div>
 
       {activeTwinData ? (
-        <TwinPanel twin={activeTwinData} />
+        <TwinPanel twin={activeTwinData} commune={data} />
       ) : (
         <p className="text-slate-400 text-sm">Aucune commune jumelle identifiée</p>
       )}
