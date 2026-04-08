@@ -43,13 +43,13 @@
 ### Frontend
 
 - [x] **UI-01**: Search bar with client-side autocomplete on commune name/code
-- [ ] **UI-02**: Results page with double-panel layout (my commune | twin commune)
-- [ ] **UI-03**: My commune panel shows: score, score detail, missing doctors, domino alert
-- [ ] **UI-04**: Twin commune panel shows: similarity %, actions taken, APL before/after
-- [ ] **UI-05**: List of alternative twins with click-to-swap
+- [x] **UI-02**: Results page with double-panel layout (my commune | twin commune)
+- [x] **UI-03**: My commune panel shows: score, score detail, missing doctors, domino alert
+- [x] **UI-04**: Twin commune panel shows: similarity %, actions taken, APL before/after
+- [x] **UI-05**: List of alternative twins with click-to-swap
 - [ ] **UI-06**: Free comparison mode (user picks any 2 communes)
 - [ ] **UI-07**: Basic PDF export of comparison report
-- [ ] **UI-08**: Mini map showing commune location
+- [x] **UI-08**: Mini map showing commune location
 
 ### Deployment
 

@@ -62,7 +62,7 @@ Plans:
 
 Plans:
 - [x] 03-01-PLAN.md — Next.js bootstrap, types, constants, search with autocomplete, landing page
-- [ ] 03-02-PLAN.md — Results page: double-panel layout, score display, domino, missing doctors, twins list, mini map
+- [x] 03-02-PLAN.md — Results page: double-panel layout, score display, domino, missing doctors, twins list, mini map
 - [ ] 03-03-PLAN.md — Free comparison mode, PDF export with dark theme
 
 ### Phase 4: Integration & Deploy
