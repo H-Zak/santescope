@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Executing Phase 03
-last_updated: "2026-04-08T00:12:44.739Z"
+status: Phase 03 Complete
+last_updated: "2026-04-08T00:30:00.000Z"
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
 ---
 
 # State: SanteScope
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-04-07)
 
 ## Current Phase
 
-**Phase 3: Frontend App — IN PROGRESS**
+**Phase 3: Frontend App — COMPLETE**
 
-- Status: IN PROGRESS
-- Plans: 2/3 done
-- Current Plan: 03
-- Progress: [█████████░] 88%
+- Status: COMPLETE
+- Plans: 3/3 done
+- Current Plan: (complete)
+- Progress: [██████████] 100%
 
 ## Phase Progress
 
@@ -35,7 +35,7 @@ See: .planning/PROJECT.md (updated 2026-04-07)
 |-------|------|--------|-------|
 | 1 | Data Foundation | **COMPLETE** | 3/3 complete |
 | 2 | Scoring & Clustering | **COMPLETE** | 3/3 complete |
-| 3 | Frontend App | **IN PROGRESS** | 2/3 complete |
+| 3 | Frontend App | **COMPLETE** | 3/3 complete |
 | 4 | Integration & Deploy | Blocked by 3 | 0/2 planned |
 
 ## Completed Plans
@@ -88,6 +88,9 @@ See: .planning/PROJECT.md (updated 2026-04-07)
 - DPE badge uses inline style (Tailwind cannot generate dynamic classes for runtime color values)
 - domino JSON schema: pct_55_plus/pct_55_plus_dept/projection_2030 (string) — not pct_55plus/dept_avg/pertes_2030 as planned
 - data_quality: "complete" (actual value) included alongside "full"/"partial"/"minimal" in CommuneData type
+- CompareView calls useCommuneData twice via independent CommunePanel sub-components (separate loading/error states)
+- PdfExportContent uses visibility:hidden not display:none (html2canvas requirement — display:none elements not capturable)
+- html2canvas imported dynamically to avoid SSR window-is-not-defined crash
 
 ### 02-01: Vulnerability Score & Domino Projection (2026-04-08, 7min)
 
@@ -139,6 +142,8 @@ None.
 
 | 02-02 | 7min | 2 | 3 |
 | Phase 03 P02 | 20min | 2 tasks | 15 files |
+| 03-03 | 20min | 2 | 5 |
+| Phase 03-frontend-app P03 | 20min | 2 tasks | 5 files |
 
 ### 03-01: Next.js Bootstrap & Landing Page Search (2026-04-08, 10min)
 
@@ -148,6 +153,15 @@ None.
 - Commune placeholder page at /commune/[code] (Plan 02 will implement full diagnostic)
 - Decisions: await params (Next.js 15 breaking change), public/data excluded from git
 - Key commits: 89d1e3a (bootstrap), 0ef84bb (search + landing)
+
+### 03-03: Free Comparison Mode & PDF Export (2026-04-08, 20min)
+
+- Free comparison: /comparer/[a]/[b] shareable route with CompareView client component
+- CommuneView: "Comparer avec..." inline search navigates via router.push to compare route
+- PdfExportContent: hidden dark-themed component (visibility:hidden, #232323, #0F766E header), résumé exécutif, 4-dimension bars, points forts/alertes
+- PdfDownloadButton: dynamic html2canvas import (no SSR crash), scale:2, PNG download
+- Phase 03 complete — all UI-01..UI-08 satisfied
+- Key commits: 4ca3afe (compare mode), 5b8789f (PDF export)
 
 ### 03-02: Results Page — Diagnostic & Twin Display (2026-04-08, 20min)
 

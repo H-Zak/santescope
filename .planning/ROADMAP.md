@@ -8,7 +8,7 @@ SanteScope ships in 4 phases over 6 days. Phase 1 builds the data foundation (do
 
 - [x] **Phase 1: Data Foundation** — Download 9 datasets, clean, merge into master parquet (Days 1-2) (completed 2026-04-07)
 - [x] **Phase 2: Scoring & Clustering** — Vulnerability score, domino, twins, JSON export (Days 2-3) (completed 2026-04-07)
-- [ ] **Phase 3: Frontend App** — Next.js with search, double-panel, twins list, PDF (Days 1-5, mock data first)
+- [x] **Phase 3: Frontend App** — Next.js with search, double-panel, twins list, PDF (Days 1-5, mock data first) (completed 2026-04-08)
 - [ ] **Phase 4: Integration & Deploy** — Wire real JSONs, polish, deploy Vercel, submit (Days 5-6)
 
 ## Phase Details
@@ -63,7 +63,7 @@ Plans:
 Plans:
 - [x] 03-01-PLAN.md — Next.js bootstrap, types, constants, search with autocomplete, landing page
 - [x] 03-02-PLAN.md — Results page: double-panel layout, score display, domino, missing doctors, twins list, mini map
-- [ ] 03-03-PLAN.md — Free comparison mode, PDF export with dark theme
+- [x] 03-03-PLAN.md — Free comparison mode, PDF export with dark theme
 
 ### Phase 4: Integration & Deploy
 **Goal**: Wire real JSON data, polish UX, deploy to Vercel, submit to hackathon
