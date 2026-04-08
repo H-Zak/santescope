@@ -96,7 +96,7 @@ export function PdfExportContent({ commune }: PdfExportContentProps) {
   if (sd.temps_urgences_min < sd.temps_urgences_national) pointsForts.push("Accès rapide aux urgences");
   else alertes.push(`Urgences éloignées (${sd.temps_urgences_min} min)`);
 
-  if (domino && domino.pct_55_plus > 50) alertes.push("Alerte succession médicale critique");
+  if (domino && domino.pct_55_plus > 0.5) alertes.push("Alerte succession médicale critique");
   if (manques && manques.length > 0) alertes.push(`Spécialités manquantes : ${manques.slice(0, 2).join(", ")}`);
 
   const badgeBg = classe ? (DPE_COLORS[classe] ?? "#94a3b8") : "#94a3b8";
