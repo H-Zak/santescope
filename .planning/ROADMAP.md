@@ -66,7 +66,7 @@ Plans:
 - [x] 03-03-PLAN.md — Free comparison mode, PDF export with dark theme
 
 ### Phase 4: Integration & Deploy
-**Goal**: Wire real JSON data, polish UX, deploy to Vercel, submit to hackathon
+**Goal**: Fix null-safety bugs, deploy to Vercel, produce hackathon submission assets
 **Depends on**: Phase 2, Phase 3
 **Requirements**: DEP-01..03
 **Success Criteria** (what must be TRUE):
@@ -77,8 +77,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: Replace mock data with real JSONs, end-to-end smoke test
-- [ ] 04-02: Vercel deploy, final polish, hackathon submission
+- [ ] 04-01-PLAN.md — Fix null-safety crashes (Paris edge case), smoke test script, gitignore surgery
+- [ ] 04-02-PLAN.md — GitHub repo, README, Reveal.js pitch slides, Vercel deploy
 
 ## Parallel Execution
 
@@ -99,4 +99,4 @@ Lane B (frontend):
 
 ---
 *Roadmap defined: 2026-04-07*
-*Last updated: 2026-04-08 after Phase 3 planning*
+*Last updated: 2026-04-08 after Phase 4 planning*
